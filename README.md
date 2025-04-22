@@ -7,4 +7,5 @@ Cyber Defenders can add, update, or degrade TTPs and IOCs for their network and 
 
 ThreatPatrol also provides feeds from over 100+ different sources, allowing organisations to stay up-to-date with the latest attack methods and trends, adjust their security posture, and protect themselves better against cyber threats. With improved situational awareness, organisations can respond more quickly and effectively when incidents occur, making ThreatPatrol an essential tool for protecting valuable data and avoiding the devastating consequences of a cyber-attack.
 
-![image](https://github.com/user-attachments/assets/6f8ae173-25fd-4043-ae16-905ec4b91e33){:.centered}
+{:style="text-align:center;"}
+![image](https://github.com/user-attachments/assets/6f8ae173-25fd-4043-ae16-905ec4b91e33)
