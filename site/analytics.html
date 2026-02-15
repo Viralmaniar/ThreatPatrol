@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Analytics · TTPExplorer</title>
+    <title>Analytics Â· THREATPATROL</title>
     <link rel="stylesheet" href="../assets/style.css" />
     <script src="../assets/theme.js" defer></script>
     <script src="analytics-data.js"></script>
@@ -46,7 +46,7 @@
       <div class="site-nav__inner">
         <a class="site-brand" href="index.html">
           <span class="site-brand__mark"></span>
-          <span>TTPExplorer</span>
+          <span>THREATPATROL</span>
         </a>
         <div class="site-menu">
           <a href="index.html">Overview</a>
@@ -79,10 +79,10 @@
           <div class="card-header"><div class="card-title">Analytic</div></div>
           <div class="card-body">
             <div style="font-size:18px; color:var(--primary); font-weight:600; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-              <span id="analyticName">—</span>
-              <span id="analyticId" class="tag">—</span>
+              <span id="analyticName">â€”</span>
+              <span id="analyticId" class="tag">â€”</span>
             </div>
-            <div id="analyticDesc" style="margin-top:8px; color:var(--muted);">—</div>
+            <div id="analyticDesc" style="margin-top:8px; color:var(--muted);">â€”</div>
           </div>
         </div>
 
@@ -92,15 +92,15 @@
             <div class="summary-grid">
               <div class="summary-card">
                 <h4>Total Analytics</h4>
-                <p id="totalAnalytics">—</p>
+                <p id="totalAnalytics">â€”</p>
               </div>
               <div class="summary-card">
                 <h4>Domains</h4>
-                <p id="totalDomains">—</p>
+                <p id="totalDomains">â€”</p>
               </div>
               <div class="summary-card">
                 <h4>Latest Update</h4>
-                <p id="latestModified">—</p>
+                <p id="latestModified">â€”</p>
               </div>
             </div>
             <hr class="hr" />
@@ -162,7 +162,7 @@
     </main>
 
     <footer class="footer">
-      <div>Generated 2026-02-03 14:31 · Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
+      <div>Generated 2026-02-03 14:31 Â· Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
     </footer>
 
     <script>
@@ -193,24 +193,24 @@
       const setText = (id, value) => {
         const el = document.getElementById(id);
         if (el) {
-          el.textContent = value || "—";
+          el.textContent = value || "â€”";
         }
       };
 
       const setSummary = () => {
         const total = ANALYTICS_STATE.rows.length;
-        setText("totalAnalytics", total ? String(total) : "—");
-        setText("totalDomains", "—");
-        setText("latestModified", "—");
+        setText("totalAnalytics", total ? String(total) : "â€”");
+        setText("totalDomains", "â€”");
+        setText("latestModified", "â€”");
 
         renderKeywordTable();
       };
 
       const renderDetails = (row) => {
         if (!row) return;
-        setText("analyticName", row.name || row.ID || "—");
-        setText("analyticId", row.ID || "—");
-        setText("analyticDesc", row.description || "—");
+        setText("analyticName", row.name || row.ID || "â€”");
+        setText("analyticId", row.ID || "â€”");
+        setText("analyticDesc", row.description || "â€”");
       };
 
       const renderTable = () => {
@@ -462,3 +462,4 @@
     </script>
   </body>
 </html>
+

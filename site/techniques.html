@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Techniques · TTPExplorer</title>
+    <title>Techniques Â· THREATPATROL</title>
     <link rel="stylesheet" href="../assets/style.css" />
     <script src="../assets/theme.js" defer></script>
     <script src="techniques-data.js"></script>
@@ -200,7 +200,7 @@
       <div class="site-nav__inner">
         <a class="site-brand" href="index.html">
           <span class="site-brand__mark"></span>
-          <span>TTPExplorer</span>
+          <span>THREATPATROL</span>
         </a>
         <div class="site-menu">
           <a href="index.html">Overview</a>
@@ -233,8 +233,8 @@
       <div id="techDetailView" class="hidden">
         <div class="detail-header">
           <div>
-            <div class="tech-id" id="detailId">—</div>
-            <div class="tech-name" id="detailName">—</div>
+            <div class="tech-id" id="detailId">â€”</div>
+            <div class="tech-name" id="detailName">â€”</div>
           </div>
           <button class="back-btn" id="backToList">Back to list</button>
         </div>
@@ -288,7 +288,7 @@
     </main>
 
     <footer class="footer">
-      <div>Generated 2026-02-03 14:31 · Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
+      <div>Generated 2026-02-03 14:31 Â· Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
     </footer>
 
     <script>
@@ -455,7 +455,7 @@
         techniqueSelect.innerHTML =
           '<option value="">All Techniques</option>' +
           techniques
-            .map((tech) => `<option value="${escapeHtml(tech.id)}">${escapeHtml(tech.id)} · ${escapeHtml(tech.name)}</option>`)
+            .map((tech) => `<option value="${escapeHtml(tech.id)}">${escapeHtml(tech.id)} Â· ${escapeHtml(tech.name)}</option>`)
             .join("");
 
         adversarySelect.innerHTML =
@@ -635,7 +635,7 @@
 
         document.getElementById("detailId").textContent = tech.id;
         document.getElementById("detailName").textContent = tech.name;
-        document.getElementById("detailDesc").textContent = tech.description || "—";
+        document.getElementById("detailDesc").textContent = tech.description || "â€”";
 
         renderOverviewTab(detail);
         renderSourcesTab(tech);
@@ -712,3 +712,4 @@
     </script>
   </body>
 </html>
+

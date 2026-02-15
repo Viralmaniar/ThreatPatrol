@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tactics · TTPExplorer</title>
+    <title>Tactics Â· THREATPATROL</title>
     <link rel="stylesheet" href="../assets/style.css" />
     <script src="../assets/theme.js" defer></script>
     <script src="tactics-data.js"></script>
@@ -13,7 +13,7 @@
       <div class="site-nav__inner">
         <a class="site-brand" href="index.html">
           <span class="site-brand__mark"></span>
-          <span>TTPExplorer</span>
+          <span>THREATPATROL</span>
         </a>
         <div class="site-menu">
           <a href="index.html">Overview</a>
@@ -45,7 +45,7 @@
         <div class="card">
           <div class="card-header"><div class="card-title">Tactic</div></div>
           <div class="card-body">
-            <div style="font-size:18px; color:var(--primary); font-weight:600;" id="tacticName">—</div>
+            <div style="font-size:18px; color:var(--primary); font-weight:600;" id="tacticName">â€”</div>
             <div class="small" style="margin-top:6px;">Technique coverage for this tactic.</div>
             <div id="platformTags" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:6px;"></div>
           </div>
@@ -56,9 +56,9 @@
           <div class="card-body">
             <table class="table" id="profileTable">
               <tr><th>Metric</th><th>Count</th></tr>
-              <tr><td>Total Techniques</td><td id="countTechniques">—</td></tr>
-              <tr><td>Sub-techniques</td><td id="countSubTechniques">—</td></tr>
-              <tr><td>Platforms</td><td id="countPlatforms">—</td></tr>
+              <tr><td>Total Techniques</td><td id="countTechniques">â€”</td></tr>
+              <tr><td>Sub-techniques</td><td id="countSubTechniques">â€”</td></tr>
+              <tr><td>Platforms</td><td id="countPlatforms">â€”</td></tr>
             </table>
           </div>
         </div>
@@ -88,7 +88,7 @@
     </main>
 
     <footer class="footer">
-      <div>Generated 2026-02-03 14:31 · Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
+      <div>Generated 2026-02-03 14:31 Â· Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
     </footer>
 
     <script>
@@ -118,7 +118,7 @@
       const setText = (id, value) => {
         const el = document.getElementById(id);
         if (el) {
-          el.textContent = value || "—";
+          el.textContent = value || "â€”";
         }
       };
 
@@ -284,4 +284,5 @@
     </script>
   </body>
 </html>
+
 
