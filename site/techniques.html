@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Techniques · TTPExplorer</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/theme.js" defer></script>
+    <script src="techniques-data.js"></script>
+    <style>
+      .tech-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 70vh;
+        overflow-y: auto;
+        padding-right: 6px;
+      }
+
+      .tech-card {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+        cursor: pointer;
+      }
+
+      .tech-card:hover {
+        border-color: var(--primary);
+        box-shadow: 0 6px 18px var(--shadow);
+      }
+
+      .tech-left {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex: 1;
+      }
+
+      .tech-id {
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .tech-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--primary-2);
+        color: var(--primary);
+        font-size: 11px;
+        background: var(--primary-soft);
+      }
+
+      .tech-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        min-width: 160px;
+      }
+
+      .icon-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .icon-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 8px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: transparent;
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .icon-btn:hover {
+        border-color: var(--primary);
+        background: var(--primary-soft);
+      }
+
+      .icon-btn svg {
+        width: 14px;
+        height: 14px;
+        fill: var(--primary);
+      }
+
+      .icon-count {
+        font-size: 12px;
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      .detail-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .back-btn {
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        border-radius: 8px;
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+
+      .back-btn:hover {
+        border-color: var(--primary);
+        background: var(--primary-soft);
+      }
+
+      .tab-strip {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .tab-btn {
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        border-radius: 10px;
+        padding: 8px 10px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .tab-btn svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--primary);
+      }
+
+      .tab-btn.active {
+        border-color: var(--primary);
+        background: var(--primary-soft);
+      }
+
+      .tab-panel {
+        display: none;
+        margin-top: 12px;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      .progress {
+        height: 8px;
+        border-radius: 999px;
+        background: var(--primary-soft-2);
+        overflow: hidden;
+      }
+
+      .progress span {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary), var(--primary-2));
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="site-nav__inner">
+        <a class="site-brand" href="index.html">
+          <span class="site-brand__mark"></span>
+          <span>TTPExplorer</span>
+        </a>
+        <div class="site-menu">
+          <a href="index.html">Overview</a>
+          <a href="tactics.html">Tactics</a>
+          <a href="techniques.html" class="active">Techniques</a>
+          <a href="software.html">Software</a>
+          <a href="groups.html">Groups</a>
+          <a href="campaigns.html">Campaigns</a>
+          <a href="mitigation.html">Mitigations</a>
+          <a href="detections.html">Detections</a>
+          <a href="analytics.html">Analytics</a>
+          <a href="feeds.html">Feeds</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main">
+      <div id="techListView">
+        <h2>Techniques</h2>
+        <p>Browse techniques with tactic and platform context. Click a technique to open the detail view.</p>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:10px 0 6px;">
+          <select id="fltTactic" class="kbd"><option value="">All Tactics</option></select>
+          <select id="fltTechnique" class="kbd"><option value="">All Techniques</option></select>
+          <select id="fltAdversary" class="kbd"><option value="">All Adversaries</option></select>
+        </div>
+        <hr class="hr" />
+        <div class="tech-list" id="techList"></div>
+      </div>
+
+      <div id="techDetailView" class="hidden">
+        <div class="detail-header">
+          <div>
+            <div class="tech-id" id="detailId">—</div>
+            <div class="tech-name" id="detailName">—</div>
+          </div>
+          <button class="back-btn" id="backToList">Back to list</button>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div style="color:var(--primary); font-weight:700;">Description</div>
+          <div id="detailDesc" style="margin-top:6px; color:var(--muted);"></div>
+        </div>
+
+        <hr class="hr" />
+
+        <div class="tab-strip">
+          <button class="tab-btn active" data-tab="overview">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16v2H4zM5 4h3v12H5zM10.5 8h3v8h-3zM16 6h3v10h-3z" /></svg>
+            Overview
+          </button>
+          <button class="tab-btn" data-tab="sources">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7l9-4 9 4-9 4-9-4zm0 5l9 4 9-4m-18 5l9 4 9-4" /></svg>
+            Data Sources
+          </button>
+          <button class="tab-btn" data-tab="adversaries">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" /></svg>
+            Weapons
+          </button>
+          <button class="tab-btn" data-tab="mitigations">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z" /></svg>
+            Gear
+          </button>
+          <button class="tab-btn" data-tab="campaigns">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4a6 6 0 100 12 6 6 0 000-12zm0 3a3 3 0 100 6 3 3 0 000-6z" /></svg>
+            Campaigns
+          </button>
+        </div>
+
+        <div class="tab-panel active" id="tab-overview">
+          <table class="table" id="overviewTable"></table>
+        </div>
+        <div class="tab-panel" id="tab-sources">
+          <table class="table" id="sourcesTable"></table>
+        </div>
+        <div class="tab-panel" id="tab-adversaries">
+          <table class="table" id="adversariesTable"></table>
+        </div>
+        <div class="tab-panel" id="tab-mitigations">
+          <table class="table" id="mitigationsTable"></table>
+        </div>
+        <div class="tab-panel" id="tab-campaigns">
+          <table class="table" id="campaignsTable"></table>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div>Generated 2026-02-03 14:31 · Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
+    </footer>
+
+    <script>
+      const DATA = window.TECHNIQUES_DATA || { techniques: [], procedures: {}, mitigations: {}, detectionStrategies: {} };
+      const CAMPAIGN_SOURCE_IDS = new Set(DATA.campaignSourceIds || []);
+
+      const escapeHtml = (value) =>
+        String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+
+      const splitList = (value) =>
+        String(value || "")
+          .split(/[,;]/)
+          .map((item) => item.trim())
+          .filter(Boolean);
+
+      const unique = (items) => Array.from(new Set(items.filter(Boolean)));
+
+      const techniqueMap = new Map(DATA.techniques.map((tech) => [tech.id, tech]));
+
+      const metricsById = new Map();
+      const maxMetrics = {
+        tactics: 1,
+        platforms: 1,
+        sources: 1,
+        adversaries: 1,
+        malware: 1,
+        tools: 1,
+      };
+
+      const getSources = (id) => DATA.detectionStrategies[id] || [];
+      const getProcedures = (id) => DATA.procedures[id] || [];
+      const getMitigations = (id) => DATA.mitigations[id] || [];
+
+      DATA.techniques.forEach((tech) => {
+        const tactics = splitList(tech.tactics);
+        const platforms = splitList(tech.platforms);
+        const sources = getSources(tech.id);
+        const procedures = getProcedures(tech.id);
+
+        const adversaries = unique(
+          procedures
+            .filter((row) => row.source_type === "intrusion-set")
+            .map((row) => row.source_name)
+        );
+        const campaigns = unique(
+          procedures
+            .filter((row) => CAMPAIGN_SOURCE_IDS.has(row.source_id))
+            .map((row) => row.source_name)
+        );
+        const malware = unique(
+          procedures
+            .filter((row) => row.source_type === "malware")
+            .map((row) => row.source_name)
+        );
+        const tools = unique(
+          procedures
+            .filter((row) => row.source_type === "tool")
+            .map((row) => row.source_name)
+        );
+        const dataSources = unique(sources.map((row) => row.source_name));
+
+        const metrics = {
+          tactics: tactics.length,
+          platforms: platforms.length,
+          sources: dataSources.length,
+          adversaries: adversaries.length,
+          malware: malware.length,
+          tools: tools.length,
+          counts: {
+            sources: sources.length,
+            mitigations: getMitigations(tech.id).length,
+            adversaries: adversaries.length,
+            tools: tools.length,
+            campaigns: campaigns.length,
+          },
+        };
+
+        metricsById.set(tech.id, { tactics, platforms, dataSources, adversaries, malware, tools, campaigns, metrics });
+
+        maxMetrics.tactics = Math.max(maxMetrics.tactics, metrics.tactics);
+        maxMetrics.platforms = Math.max(maxMetrics.platforms, metrics.platforms);
+        maxMetrics.sources = Math.max(maxMetrics.sources, metrics.sources);
+        maxMetrics.adversaries = Math.max(maxMetrics.adversaries, metrics.adversaries);
+        maxMetrics.malware = Math.max(maxMetrics.malware, metrics.malware);
+        maxMetrics.tools = Math.max(maxMetrics.tools, metrics.tools);
+      });
+
+      const iconSvg = {
+        search: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.8l-.3-.3a6 6 0 10-.7.7l.3.3v.8l5 5 1.5-1.5-5-5zM10 15a5 5 0 110-10 5 5 0 010 10z" /></svg>',
+        wrench: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 19l-6.2-6.2a5 5 0 01-6.6-6.6l2.3 2.3 2.1-2.1-2.3-2.3a5 5 0 006.6 6.6L24 17.9 22 19zM2 22l6.6-6.6 2 2L4 24H2v-2z" /></svg>',
+        bug: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 8h-2.1a6 6 0 00-11.8 0H4v2h2v2H4v2h2.2a6 6 0 0011.6 0H20v-2h-2v-2h2V8zM12 6a4 4 0 014 4v4a4 4 0 11-8 0v-4a4 4 0 014-4z" /></svg>',
+        skull: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 00-4 12.8V20h2v2h2v-2h2v2h2v-2h2v-5.2A7 7 0 0012 2zm-3 8a1 1 0 110-2 1 1 0 010 2zm6 0a1 1 0 110-2 1 1 0 010 2z" /></svg>',
+        bullseye: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4a6 6 0 100 12 6 6 0 000-12zm0 3a3 3 0 100 6 3 3 0 000-6z" /></svg>',
+      };
+
+      const renderList = () => {
+        const list = document.getElementById("techList");
+        if (!list) return;
+        list.innerHTML = applyListFilters(DATA.techniques)
+          .map((tech) => {
+            const meta = metricsById.get(tech.id) || { tactics: [], platforms: [], metrics: { counts: {} } };
+            const tactics = meta.tactics.slice(0, 2);
+            const platforms = meta.platforms.slice(0, 4);
+            const pills = [
+              ...tactics.map((t) => `<span class="pill">${escapeHtml(t)}</span>`),
+              ...platforms.map((p) => `<span class="pill">${escapeHtml(p)}</span>`),
+            ].join("");
+
+            const counts = meta.metrics.counts;
+            const actions = [
+              { icon: iconSvg.search, count: counts.sources || 0, title: "Detection strategies" },
+              { icon: iconSvg.wrench, count: counts.mitigations || 0, title: "Mitigations" },
+              { icon: iconSvg.bug, count: counts.tools || 0, title: "Tools" },
+              { icon: iconSvg.skull, count: counts.adversaries || 0, title: "Adversaries" },
+              { icon: iconSvg.bullseye, count: counts.campaigns || 0, title: "Campaigns" },
+            ];
+
+            const actionHtml = actions
+              .map(
+                (item) =>
+                  `<button class="icon-btn" type="button" title="${item.title}">${item.icon}<span class="icon-count">${item.count}</span></button>`
+              )
+              .join("");
+
+            return (
+              `<div class="tech-card" data-id="${escapeHtml(tech.id)}">` +
+              `<div class="tech-left">` +
+              `<div class="tech-id">${escapeHtml(tech.id)}</div>` +
+              `<div class="tech-name">${escapeHtml(tech.name)}</div>` +
+              `<div class="pill-row">${pills}</div>` +
+              `</div>` +
+              `<div class="tech-right"><div class="icon-row">${actionHtml}</div></div>` +
+              `</div>`
+            );
+          })
+          .join("");
+      };
+
+      const populateFilters = () => {
+        const tacticSelect = document.getElementById("fltTactic");
+        const techniqueSelect = document.getElementById("fltTechnique");
+        const adversarySelect = document.getElementById("fltAdversary");
+        if (!tacticSelect || !techniqueSelect || !adversarySelect) return;
+
+        const tactics = unique(
+          DATA.techniques.flatMap((tech) => splitList(tech.tactics))
+        ).sort();
+        const techniques = DATA.techniques
+          .map((tech) => ({ id: tech.id, name: tech.name }))
+          .sort((a, b) => a.id.localeCompare(b.id));
+        const adversaries = unique(
+          Array.from(metricsById.values()).flatMap((meta) => meta.adversaries)
+        ).sort();
+
+        tacticSelect.innerHTML =
+          '<option value="">All Tactics</option>' +
+          tactics.map((tactic) => `<option value="${escapeHtml(tactic)}">${escapeHtml(tactic)}</option>`).join("");
+
+        techniqueSelect.innerHTML =
+          '<option value="">All Techniques</option>' +
+          techniques
+            .map((tech) => `<option value="${escapeHtml(tech.id)}">${escapeHtml(tech.id)} · ${escapeHtml(tech.name)}</option>`)
+            .join("");
+
+        adversarySelect.innerHTML =
+          '<option value="">All Adversaries</option>' +
+          adversaries.map((name) => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join("");
+      };
+
+      const applyListFilters = (techniques) => {
+        const tactic = document.getElementById("fltTactic")?.value || "";
+        const technique = document.getElementById("fltTechnique")?.value || "";
+        const adversary = document.getElementById("fltAdversary")?.value || "";
+
+        return techniques.filter((tech) => {
+          const meta = metricsById.get(tech.id) || { tactics: [], adversaries: [] };
+          if (tactic && !meta.tactics.includes(tactic)) {
+            return false;
+          }
+          if (technique && tech.id !== technique) {
+            return false;
+          }
+          if (adversary && !meta.adversaries.includes(adversary)) {
+            return false;
+          }
+          return true;
+        });
+      };
+
+      const progressBar = (value, max) => {
+        const safeMax = Math.max(max || 1, 1);
+        const pct = Math.min(100, Math.round((value / safeMax) * 100));
+        return `<div class="progress"><span style="width:${pct}%"></span></div>`;
+      };
+
+      const renderOverviewTab = (detail) => {
+        const table = document.getElementById("overviewTable");
+        if (!table) return;
+        const rows = [
+          ["Tactics", detail.tactics.length, maxMetrics.tactics],
+          ["Platforms", detail.platforms.length, maxMetrics.platforms],
+          ["Data Sources", detail.dataSources.length, maxMetrics.sources],
+          ["Adversaries", detail.adversaries.length, maxMetrics.adversaries],
+          ["Malware", detail.malware.length, maxMetrics.malware],
+          ["Tools", detail.tools.length, maxMetrics.tools],
+        ];
+
+        const head = "<tr><th>Profile</th><th>Uniq</th><th>Percent</th><th>Matrix Proportion</th></tr>";
+        const body = rows
+          .map(([label, count, max]) => {
+            const percent = max ? Math.round((count / max) * 100) : 0;
+            return (
+              `<tr>` +
+              `<td>${label}</td>` +
+              `<td>${count}</td>` +
+              `<td>${percent}%</td>` +
+              `<td>${progressBar(count, max)}</td>` +
+              `</tr>`
+            );
+          })
+          .join("");
+        table.innerHTML = head + body;
+      };
+
+      const renderSourcesTab = (tech) => {
+        const table = document.getElementById("sourcesTable");
+        if (!table) return;
+        const sources = getSources(tech.id);
+        if (!sources.length) {
+          table.innerHTML = "<tr><td>No data sources mapped.</td></tr>";
+          return;
+        }
+        const counts = new Map();
+        sources.forEach((row) => {
+          counts.set(row.source_name, (counts.get(row.source_name) || 0) + 1);
+        });
+        const max = Math.max(...counts.values());
+        const head = "<tr><th>Data Source</th><th>Techniques (Dup)</th><th>Matrix Proportion</th></tr>";
+        const body = Array.from(counts.entries())
+          .sort((a, b) => b[1] - a[1])
+          .map(([name, count]) =>
+            `<tr><td>${escapeHtml(name)}</td><td>${count}</td><td>${progressBar(count, max)}</td></tr>`
+          )
+          .join("");
+        table.innerHTML = head + body;
+      };
+
+      const renderAdversariesTab = (tech, detail) => {
+        const table = document.getElementById("adversariesTable");
+        if (!table) return;
+        const procedures = getProcedures(tech.id);
+        if (!procedures.length) {
+          table.innerHTML = "<tr><td>No procedure examples mapped.</td></tr>";
+          return;
+        }
+        const uniqueSources = new Map();
+        procedures.forEach((row) => {
+          if (!row.source_name) return;
+          if (!uniqueSources.has(row.source_name)) {
+            uniqueSources.set(row.source_name, row.source_type);
+          }
+        });
+
+        const head = "<tr><th>Weapon</th><th>Tactics</th><th>Techniques</th><th>Adversaries</th></tr>";
+        const body = Array.from(uniqueSources.entries())
+          .map(([name, type]) => {
+            const adversaryCount = type === "intrusion-set" ? 1 : 0;
+            return (
+              `<tr>` +
+              `<td>${escapeHtml(name)}</td>` +
+              `<td>${detail.tactics.length}</td>` +
+              `<td>1</td>` +
+              `<td>${adversaryCount}</td>` +
+              `</tr>`
+            );
+          })
+          .join("");
+        table.innerHTML = head + body;
+      };
+
+      const renderCampaignsTab = (tech, detail) => {
+        const table = document.getElementById("campaignsTable");
+        if (!table) return;
+        const procedures = getProcedures(tech.id);
+        const campaigns = procedures.filter((row) => CAMPAIGN_SOURCE_IDS.has(row.source_id));
+        if (!campaigns.length) {
+          table.innerHTML = "<tr><td>No campaigns mapped.</td></tr>";
+          return;
+        }
+        const uniqueCampaigns = new Map();
+        campaigns.forEach((row) => {
+          if (!row.source_name) return;
+          if (!uniqueCampaigns.has(row.source_name)) {
+            uniqueCampaigns.set(row.source_name, row.source_id);
+          }
+        });
+        const head = "<tr><th>Campaign</th><th>Tactics</th><th>Techniques</th><th>Adversaries</th></tr>";
+        const body = Array.from(uniqueCampaigns.entries())
+          .map(([name]) =>
+            `<tr>` +
+            `<td>${escapeHtml(name)}</td>` +
+            `<td>${detail.tactics.length}</td>` +
+            `<td>1</td>` +
+            `<td>${detail.adversaries.length}</td>` +
+            `</tr>`
+          )
+          .join("");
+        table.innerHTML = head + body;
+      };
+
+      const renderMitigationsTab = (tech) => {
+        const table = document.getElementById("mitigationsTable");
+        if (!table) return;
+        const rows = getMitigations(tech.id);
+        if (!rows.length) {
+          table.innerHTML = "<tr><td>No mitigations mapped.</td></tr>";
+          return;
+        }
+        const counts = new Map();
+        rows.forEach((row) => {
+          counts.set(row.source_name, (counts.get(row.source_name) || 0) + 1);
+        });
+        const max = Math.max(...counts.values());
+        const head = "<tr><th>Mitigation</th><th>Techniques</th><th>Matrix Proportion</th></tr>";
+        const body = Array.from(counts.entries())
+          .sort((a, b) => b[1] - a[1])
+          .map(([name, count]) =>
+            `<tr><td>${escapeHtml(name)}</td><td>${count}</td><td>${progressBar(count, max)}</td></tr>`
+          )
+          .join("");
+        table.innerHTML = head + body;
+      };
+
+      const showDetail = (id) => {
+        const tech = techniqueMap.get(id);
+        if (!tech) return;
+        const detail = metricsById.get(id);
+        if (!detail) return;
+
+        document.getElementById("detailId").textContent = tech.id;
+        document.getElementById("detailName").textContent = tech.name;
+        document.getElementById("detailDesc").textContent = tech.description || "—";
+
+        renderOverviewTab(detail);
+        renderSourcesTab(tech);
+        renderAdversariesTab(tech, detail);
+        renderMitigationsTab(tech);
+        renderCampaignsTab(tech, detail);
+
+        document.getElementById("techListView").classList.add("hidden");
+        document.getElementById("techDetailView").classList.remove("hidden");
+      };
+
+      const showList = () => {
+        document.getElementById("techDetailView").classList.add("hidden");
+        document.getElementById("techListView").classList.remove("hidden");
+      };
+
+      const activateTab = (name) => {
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.tab === name);
+        });
+        document.querySelectorAll(".tab-panel").forEach((panel) => {
+          panel.classList.toggle("active", panel.id === `tab-${name}`);
+        });
+      };
+
+      const bindEvents = () => {
+        document.getElementById("techList").addEventListener("click", (event) => {
+          const card = event.target.closest(".tech-card");
+          if (!card) return;
+          const id = card.getAttribute("data-id");
+          if (!id) return;
+          window.location.hash = id;
+          showDetail(id);
+        });
+
+        document.getElementById("backToList").addEventListener("click", () => {
+          history.pushState("", document.title, window.location.pathname + window.location.search);
+          showList();
+        });
+
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            activateTab(btn.dataset.tab);
+          });
+        });
+
+        ["fltTactic", "fltTechnique", "fltAdversary"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.addEventListener("change", renderList);
+        });
+
+        window.addEventListener("hashchange", () => {
+          const id = window.location.hash.replace("#", "");
+          if (id && techniqueMap.has(id)) {
+            showDetail(id);
+          } else {
+            showList();
+          }
+        });
+      };
+
+      const init = () => {
+        populateFilters();
+        renderList();
+        bindEvents();
+        const initial = window.location.hash.replace("#", "");
+        if (initial && techniqueMap.has(initial)) {
+          showDetail(initial);
+        }
+      };
+
+      init();
+    </script>
+  </body>
+</html>

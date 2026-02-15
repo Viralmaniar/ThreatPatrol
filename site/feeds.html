@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Feeds · TTPExplorer</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/theme.js" defer></script>
+    <style>
+        .feed-card {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .feed-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          gap: 12px;
+        }
+        .feed-source {
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 12px;
+          background: var(--surface);
+        }
+        .feed-source h3 {
+          margin: 0 0 8px 0;
+          font-size: 0.95rem;
+        }
+        .feed-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .feed-item a {
+          color: var(--primary);
+          text-decoration: none;
+          font-weight: 600;
+        }
+        .feed-item a:hover {
+          text-decoration: underline;
+        }
+        .feed-meta {
+          color: var(--muted);
+          font-size: 0.75rem;
+          margin-top: 2px;
+        }
+        .feed-status {
+          color: var(--muted);
+          font-size: 0.8rem;
+        }
+        .summary-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+          gap: 12px;
+        }
+        .summary-card {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 12px;
+        }
+        .summary-card h4 {
+          margin: 0;
+          font-size: 0.7rem;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          color: var(--muted);
+        }
+        .summary-card p {
+          margin: 6px 0 0 0;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--primary);
+        }
+      </style>
+    
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="site-nav__inner">
+        <a class="site-brand" href="index.html">
+          <span class="site-brand__mark"></span>
+          <span>TTPExplorer</span>
+        </a>
+        <div class="site-menu">
+          <a href="index.html">Overview</a>
+          <a href="tactics.html">Tactics</a>
+          <a href="techniques.html">Techniques</a>
+          <a href="software.html">Software</a>
+          <a href="groups.html">Groups</a>
+          <a href="campaigns.html">Campaigns</a>
+          <a href="mitigation.html">Mitigations</a>
+          <a href="detections.html">Detections</a>
+          <a href="analytics.html">Analytics</a>
+          <a href="feeds.html" class="active">Feeds</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main">
+      
+  <h2>Feeds</h2>
+  <p>Threat intelligence feed snapshot and status.</p>
+  <hr class="hr" />
+  <div class="grid">
+    <div class="card" style="grid-column: 1 / -1;">
+      <div class="card-header"><div class="card-title">Feed Snapshot</div></div>
+      <div class="card-body">
+        <div class="summary-grid">
+          <div class="summary-card">
+            <h4>Total Feeds</h4>
+            <p id="feedTotal">0</p>
+          </div>
+          <div class="summary-card">
+            <h4>Loaded</h4>
+            <p id="feedLoaded">0</p>
+          </div>
+          <div class="summary-card">
+            <h4>Failed</h4>
+            <p id="feedFailed">0</p>
+          </div>
+          <div class="summary-card">
+            <h4>Last Updated</h4>
+            <p id="feedUpdated">—</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="grid-column: 1 / -1;">
+      <div class="card-header"><div class="card-title">Threat Intelligence Feeds</div></div>
+      <div class="card-body feed-card">
+        <div class="feed-status" id="feedStatus">Loading feeds...</div>
+        <div class="feed-grid" id="feedGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const feeds = [
+      {
+        name: "Darknet.org.uk",
+        url: "http://www.darknet.org.uk/feed/",
+      },
+      {
+        name: "Reddit r/cybersecurity",
+        url: "https://www.reddit.com/r/cybersecurity/.rss",
+      },
+      {
+        name: "The Hacker News",
+        url: "https://feeds.feedburner.com/TheHackersNews?format=xml",
+      },
+      {
+        name: "Graham Cluley",
+        url: "https://grahamcluley.com/feed/",
+      },
+      {
+        name: "Krebs on Security",
+        url: "https://krebsonsecurity.com/feed/",
+      },
+      {
+        name: "CSO Online",
+        url: "https://www.csoonline.com/feed/",
+      },
+      {
+        name: "Dark Reading",
+        url: "https://www.darkreading.com/rss.xml",
+      },
+      {
+        name: "Cyble Blog",
+        url: "https://cyble.com/blog/feed/",
+      },
+      {
+        name: "Go2bSecure",
+        url: "https://www.go2bsecure.com/feed/",
+      },
+      {
+        name: "Cyble Feed",
+        url: "https://cyble.com/feed/",
+      },
+      {
+        name: "WeLiveSecurity",
+        url: "https://www.welivesecurity.com/en/rss/feed/",
+      },
+      {
+        name: "Sophos News",
+        url: "https://news.sophos.com/en-us/feed/",
+      },
+      {
+        name: "Infosecurity Magazine",
+        url: "https://www.infosecurity-magazine.com/rss/news/",
+      },
+      {
+        name: "Jisasoftech",
+        url: "https://www.jisasoftech.com/feed/",
+      },
+      {
+        name: "Fidelis Security",
+        url: "https://fidelissecurity.com/feed/",
+      },
+      {
+        name: "Cyberbuilders (Substack)",
+        url: "https://cyberbuilders.substack.com/feed",
+      },
+      {
+        name: "UnderDefense",
+        url: "https://underdefense.com/feed/",
+      },
+      {
+        name: "Matt Palmer on Cybersecurity",
+        url: "https://feeds.feedburner.com/mattpalmeroncybersecurity",
+      },
+      {
+        name: "Protegent360",
+        url: "https://protegent360.com/blog/feed/",
+      },
+      {
+        name: "Venture in Security",
+        url: "https://ventureinsecurity.net/feed",
+      },
+      {
+        name: "DaVinci Forensics",
+        url: "https://davinciforensics.co.za/cybersecurity/feed/",
+      },
+      {
+        name: "Cisco Security Blog",
+        url: "https://blogs.cisco.com/security/feed",
+      },
+      {
+        name: "McAfee Blog",
+        url: "https://www.mcafee.com/blogs/feed/",
+      },
+      {
+        name: "NIST Cybersecurity Insights",
+        url: "https://www.nist.gov/blogs/cybersecurity-insights/rss.xml",
+      },
+      {
+        name: "Trend Micro Research",
+        url: "http://feeds.trendmicro.com/TrendMicroResearch",
+      },
+      {
+        name: "BleepingComputer",
+        url: "https://www.bleepingcomputer.com/feed/",
+      },
+      {
+        name: "Proofpoint",
+        url: "https://www.proofpoint.com/us/rss.xml",
+      },
+      {
+        name: "Imperva",
+        url: "https://www.imperva.com/blog/feed/",
+      },
+      {
+        name: "ScienceSoft (InfoSec)",
+        url: "https://www.scnsoft.com/blog/category/information-security/atom",
+      },
+      {
+        name: "Webroot Blog",
+        url: "https://www.webroot.com/blog/feed/",
+      },
+      {
+        name: "UpGuard",
+        url: "https://www.upguard.com/blog/rss.xml",
+      },
+      {
+        name: "PCI Security Standards",
+        url: "https://blog.pcisecuritystandards.org/rss.xml",
+      },
+      {
+        name: "Heimdal Security",
+        url: "https://heimdalsecurity.com/blog/feed/",
+      },
+      {
+        name: "Sectigo Store Blog",
+        url: "https://sectigostore.com/blog/feed/",
+      },
+      {
+        name: "GovTech · Lohrmann on Infrastructure",
+        url: "https://feeds.feedburner.com/govtech/blogs/lohrmann_on_infrastructure",
+      },
+      {
+        name: "Wallarm Lab",
+        url: "https://lab.wallarm.com/feed/",
+      },
+      {
+        name: "SecPod",
+        url: "https://www.secpod.com/blog/feed/",
+      },
+      {
+        name: "CheapSSLShop",
+        url: "https://www.cheapsslshop.com/blog/feed",
+      },
+      {
+        name: "SecureBlitz",
+        url: "https://secureblitz.com/feed/",
+      },
+      {
+        name: "Cyber Defense Magazine",
+        url: "https://www.cyberdefensemagazine.com/feed/",
+      },
+      {
+        name: "CyberHoot",
+        url: "https://cyberhoot.com/category/blog/feed/",
+      },
+      {
+        name: "SOC Prime",
+        url: "https://socprime.com/feed/",
+      },
+      {
+        name: "Pivot Point Security",
+        url: "https://www.pivotpointsecurity.com/feed/",
+      },
+      {
+        name: "Clear Network",
+        url: "https://clearnetwork.com/feed/",
+      },
+      {
+        name: "Google Online Security Blog",
+        url: "https://feeds.feedburner.com/GoogleOnlineSecurityBlog",
+      },
+      {
+        name: "BlackFog",
+        url: "https://www.blackfog.com/feed/",
+      },
+      {
+        name: "PrivacySavvy",
+        url: "https://privacysavvy.com/feed/",
+      },
+      {
+        name: "TaoSecurity",
+        url: "https://taosecurity.blogspot.com/feeds/posts/default?alt=rss",
+      },
+      {
+        name: "Last Watchdog",
+        url: "https://www.lastwatchdog.com/feed/",
+      },
+      {
+        name: "MazeBolt",
+        url: "https://mazebolt.com/feed",
+      },
+      {
+        name: "ANY.RUN Blog",
+        url: "https://any.run/cybersecurity-blog/feed/",
+      },
+      {
+        name: "Cybersecurity Marketing Alliance",
+        url: "https://www.cm-alliance.com/cybersecurity-blog/rss.xml",
+      },
+      {
+        name: "Vista InfoSec",
+        url: "https://vistainfosec.com/feed/",
+      },
+      {
+        name: "Data Privacy Manager",
+        url: "https://dataprivacymanager.net/feed/",
+      },
+      {
+        name: "Flying Penguin",
+        url: "https://www.flyingpenguin.com/feed/",
+      },
+      {
+        name: "Erdal Ozkaya",
+        url: "https://erdalozkaya.com/feed/",
+      },
+      {
+        name: "IDSA",
+        url: "https://www.idsalliance.org/feed/",
+      },
+      {
+        name: "ExploitOne",
+        url: "https://www.exploitone.com/feed/",
+      },
+      {
+        name: "TSFactory InfoSec Digest",
+        url: "https://www.tsfactory.com/forums/blogs/category/infosec-digest/feed/",
+      },
+      {
+        name: "Ignyte Platform",
+        url: "https://www.ignyteplatform.com/feed/",
+      },
+      {
+        name: "Canary Trap",
+        url: "https://canarytrap.com/feed/",
+      },
+      {
+        name: "SecureBlink Threat Feed",
+        url: "https://www.secureblink.com/rss-feeds/threat-feed",
+      },
+      {
+        name: "Virtru",
+        url: "https://www.virtru.com/blog/rss.xml",
+      },
+      {
+        name: "Empower eLearning",
+        url: "https://www.empowerelearning.com/blog/feed/",
+      },
+      {
+        name: "Cloudbric",
+        url: "https://www.cloudbric.com/feed/",
+      },
+      {
+        name: "CVETodo",
+        url: "https://cvetodo.com/blog.rss",
+      },
+      {
+        name: "CrowdStrike",
+        url: "https://www.crowdstrike.com/en-us/blog/feed",
+      },
+      {
+        name: "Hack The Box",
+        url: "https://www.hackthebox.com/rss/blog/all",
+      },
+      {
+        name: "eye.security",
+        url: "https://www.eye.security/blog/rss.xml",
+      },
+      {
+        name: "CyberScoop",
+        url: "https://cyberscoop.com/feed/",
+      },
+      {
+        name: "Cybertec Security",
+        url: "https://info.cybertecsecurity.com/rss.xml",
+      },
+      {
+        name: "Cybersecurity Dive",
+        url: "https://www.cybersecuritydive.com/feeds/news/",
+      },
+      {
+        name: "The Guardian · Computer Security",
+        url: "https://www.theguardian.com/technology/data-computer-security/rss",
+      },
+      {
+        name: "Threatpost",
+        url: "https://threatpost.com/feed/",
+      },
+      {
+        name: "Personal Privacy Online",
+        url: "https://personalprivacyonline.com/feed/",
+      },
+      {
+        name: "Acunetix Blog",
+        url: "https://www.acunetix.com/blog/feed/",
+      },
+      {
+        name: "Hacker Combat",
+        url: "https://www.hackercombat.com/feed/",
+      },
+      {
+        name: "Security Innovation",
+        url: "https://blog.securityinnovation.com/rss.xml",
+      },
+      {
+        name: "Marco Ramilli",
+        url: "https://marcoramilli.com/feed/",
+      },
+      {
+        name: "WeSecureApp",
+        url: "https://wesecureapp.com/feed/",
+      },
+      {
+        name: "Cyber Crimes Watch",
+        url: "https://www.cybercrimeswatch.com/feed/",
+      },
+      {
+        name: "Be4Sec",
+        url: "https://be4sec.com/feed/",
+      },
+      {
+        name: "CKDIII",
+        url: "https://feeds.feedburner.com/ckdiii",
+      },
+      {
+        name: "Infinigate News",
+        url: "https://www.infinigate.com/uk/news-types/news-press/feed/",
+      },
+      {
+        name: "CyberPilot Blog",
+        url: "https://www.cyberpilot.io/cyberpilot-blog/rss.xml",
+      },
+      {
+        name: "IT Security Expert",
+        url: "https://blog.itsecurityexpert.co.uk/feeds/posts/default?alt=atom",
+      },
+      {
+        name: "SDM · Cybersecurity Chronicles",
+        url: "https://www.sdmmag.com/rss/topic/6802-cybersecurity-chronicles",
+      },
+      {
+        name: "eSecurity Planet",
+        url: "https://www.esecurityplanet.com/feed/",
+      },
+      {
+        name: "Help Net Security",
+        url: "https://www.helpnetsecurity.com/feed/",
+      },
+      {
+        name: "GBHackers",
+        url: "https://gbhackers.com/feed/",
+      },
+      {
+        name: "WIRED",
+        url: "https://www.wired.com/feed/rss",
+      },
+      {
+        name: "CyberInsider",
+        url: "https://cyberinsider.com/feed/",
+      },
+      {
+        name: "Schneier on Security",
+        url: "https://www.schneier.com/feed/",
+      },
+      {
+        name: "The Cyber Express",
+        url: "https://thecyberexpress.com/feed/",
+      },
+      {
+        name: "MIT News · Cybersecurity",
+        url: "https://news.mit.edu/topic/mitcyber-security-rss.xml",
+      },
+      {
+        name: "Clubic · Sécurité",
+        url: "https://www.clubic.com/feed/antivirus-securite-informatique/rss",
+      },
+      {
+        name: "Il Sole 24 Ore · Cybersicurezza",
+        url: "https://www.ilsole24ore.com/rss/tecnologia--cybersicurezza.xml",
+      },
+      {
+        name: "Foreign Affairs · Cybersecurity",
+        url: "https://www.foreignaffairs.com/feeds/topic/cybersecurity/rss.xml",
+      },
+      {
+        name: "NYTimes · Cybersecurity",
+        url: "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/spotlight/cybersecurity/rss.xml",
+      },
+      {
+        name: "Mashable India · Cybersecurity",
+        url: "https://in.mashable.com/cybersecurity.xml",
+      },
+      {
+        name: "The Verge · Cyber Security",
+        url: "https://www.theverge.com/rss/cyber-security/index.xml",
+      },
+      {
+        name: "TechCrunch · Cybersecurity",
+        url: "https://techcrunch.com/tag/cybersecurity/feed/",
+      },
+      {
+        name: "Alias Robotics News",
+        url: "https://news.aliasrobotics.com/rss/",
+      },
+      {
+        name: "Tripwire",
+        url: "https://www.tripwire.com/blogs.xml",
+      },
+      {
+        name: "The Conversation · Cybersecurity",
+        url: "https://theconversation.com/topics/cybersecurity-535/articles.atom",
+      },
+      {
+        name: "SNWire",
+        url: "https://snwire.com/feed/",
+      },
+      {
+        name: "Mitnick Security",
+        url: "https://www.mitnicksecurity.com/blog/rss.xml",
+      },
+      {
+        name: "SCMP · Cybersecurity",
+        url: "https://www.scmp.com/rss/296935/feed/",
+      },
+      {
+        name: "Security Magazine",
+        url: "https://www.securitymagazine.com/rss/topic/2788",
+      },
+      {
+        name: "U.S. News · Cybersecurity",
+        url: "https://www.usnews.com/topics/subjects/cybersecurity/rss",
+      },
+      {
+        name: "2B Innovations",
+        url: "https://2binnovations.com/category/cybersecurity-news-updates/feed/",
+      },
+      {
+        name: "Seqrite",
+        url: "https://www.seqrite.com/blog/tag/cybersecurity/",
+      },
+      {
+        name: "Security Affairs",
+        url: "https://securityaffairs.com/feed",
+      },
+      {
+        name: "Anomali Blog",
+        url: "https://www.anomali.com/blog",
+      },
+      {
+        name: "Invicti Blog",
+        url: "https://www.invicti.com/blog",
+      },
+      {
+        name: "K7 Computing",
+        url: "https://blog.k7computing.com/",
+      },
+      {
+        name: "IS Decisions",
+        url: "https://www.isdecisions.com/en/blog",
+      },
+      {
+        name: "Cybermaniacs",
+        url: "https://cybermaniacs.com/cm-blog",
+      },
+      {
+        name: "Huntress Blog",
+        url: "https://www.huntress.com/blog",
+      },
+      {
+        name: "SC World",
+        url: "https://www.scworld.com/",
+      },
+      {
+        name: "SensorsTechForum",
+        url: "https://sensorstechforum.com/category/cyber-news/",
+      },
+      {
+        name: "ImmuniWeb",
+        url: "https://www.immuniweb.com/blog/",
+      },
+      {
+        name: "WebOrion",
+        url: "https://theweborion.com/blog/",
+      },
+      {
+        name: "Rapid7",
+        url: "https://www.rapid7.com/blog/",
+      },
+      {
+        name: "Broadcom (Symantec) Blogs",
+        url: "https://sed-cms.broadcom.com/rss/v1/blogs/rss.xml",
+      },
+      {
+        name: "Check Point Research",
+        url: "https://research.checkpoint.com/feed/",
+      },
+      {
+        name: "Cisco Talos",
+        url: "https://feeds.feedburner.com/feedburner/Talos",
+      },
+      {
+        name: "Cloudflare Security",
+        url: "https://blog.cloudflare.com/tag/security/rss",
+      },
+      {
+        name: "Cofense",
+        url: "https://cofense.com/feed/",
+      },
+      {
+        name: "CrowdStrike Counter Adversary Ops",
+        url: "https://www.crowdstrike.com/en-us/blog/category.counter-adversary-operations/",
+      },
+      {
+        name: "EclecticIQ",
+        url: "https://blog.eclecticiq.com/rss.xml",
+      },
+      {
+        name: "Fox-IT",
+        url: "https://blog.fox-it.com/feed/",
+      },
+      {
+        name: "Google Project Zero",
+        url: "https://projectzero.google/feed.xml",
+      },
+      {
+        name: "Malwarebytes",
+        url: "https://www.malwarebytes.com/blog/feed/index.xml",
+      },
+      {
+        name: "Microsoft Security Blog",
+        url: "https://www.microsoft.com/en-us/security/blog/feed/",
+      },
+      {
+        name: "Qualys",
+        url: "https://blog.qualys.com/feed",
+      },
+      {
+        name: "Quarkslab",
+        url: "https://blog.quarkslab.com/feeds/all.rss.xml",
+      },
+      {
+        name: "Quick Heal",
+        url: "https://www.quickheal.com/blogs/feed/",
+      },
+      {
+        name: "The Record",
+        url: "https://therecord.media/feed",
+      },
+      {
+        name: "SensePost",
+        url: "https://sensepost.com/rss.xml",
+      },
+      {
+        name: "SentinelOne Labs",
+        url: "https://www.sentinelone.com/labs/feed/",
+      },
+      {
+        name: "Palo Alto Networks",
+        url: "https://www.paloaltonetworks.com/blog/feed/",
+      },
+      {
+        name: "Unit 42",
+        url: "https://www.paloaltonetworks.com/blog/unit42/feed/",
+      },
+      {
+        name: "UpGuard Breaches",
+        url: "https://www.upguard.com/breaches/rss.xml",
+      },
+      {
+        name: "Virus Bulletin",
+        url: "https://www.virusbulletin.com/rss",
+      },
+    ];
+
+    let feedLoadedCount = 0;
+    let feedFailedCount = 0;
+    const feedItemCache = [];
+    const maxFeedItems = 2000;
+
+    const updateFeedSnapshot = () => {
+      document.getElementById("feedTotal").textContent = feeds.length;
+      document.getElementById("feedLoaded").textContent = feedLoadedCount;
+      document.getElementById("feedFailed").textContent = feedFailedCount;
+      document.getElementById("feedUpdated").textContent = new Date().toLocaleString();
+    };
+
+    const persistFeedItems = () => {
+      try {
+        const trimmed = feedItemCache.slice(0, maxFeedItems);
+        localStorage.setItem("tiFeedItems", JSON.stringify(trimmed));
+        localStorage.setItem("tiFeedUpdated", new Date().toISOString());
+      } catch (error) {
+        // ignore storage errors
+      }
+    };
+
+    const proxyUrls = (url) => [
+      { type: "xml", url: `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}` },
+      { type: "json", url: `https://api.allorigins.win/get?url=${encodeURIComponent(url)}` },
+      { type: "xml", url: `https://r.jina.ai/http://${url.replace(/^https?:\/\//, "")}` },
+      { type: "xml", url: `https://r.jina.ai/https://${url.replace(/^https?:\/\//, "")}` },
+      { type: "rss2json", url: `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}` },
+      { type: "xml", url: `https://cors.isomorphic-git.org/${url}` },
+    ];
+
+    const parseFeed = (xmlText) => {
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(xmlText, "text/xml");
+      const items = Array.from(xml.querySelectorAll("item")).map((item) => ({
+        title: item.querySelector("title")?.textContent?.trim() || "Untitled",
+        link: item.querySelector("link")?.textContent?.trim() || "",
+        date:
+          item.querySelector("pubDate")?.textContent?.trim() ||
+          item.querySelector("dc\\:date")?.textContent?.trim() ||
+          "",
+      }));
+
+      if (items.length) return items;
+
+      return Array.from(xml.querySelectorAll("entry")).map((entry) => ({
+        title: entry.querySelector("title")?.textContent?.trim() || "Untitled",
+        link:
+          entry.querySelector("link[rel='alternate']")?.getAttribute("href") ||
+          entry.querySelector("link")?.getAttribute("href") ||
+          "",
+        date:
+          entry.querySelector("updated")?.textContent?.trim() ||
+          entry.querySelector("published")?.textContent?.trim() ||
+          "",
+      }));
+    };
+
+    const renderFeedCard = (result) => {
+      const grid = document.getElementById("feedGrid");
+      const card = document.createElement("div");
+      card.className = "feed-source";
+      const header = document.createElement("h3");
+      header.textContent = result.name;
+      card.appendChild(header);
+
+      if (result.error) {
+        const error = document.createElement("div");
+        error.className = "feed-status";
+        error.textContent = result.error;
+        card.appendChild(error);
+        grid.appendChild(card);
+        feedFailedCount += 1;
+        feedLoadedCount += 1;
+        updateFeedSnapshot();
+        return;
+      }
+
+      const list = document.createElement("ul");
+      list.className = "feed-list";
+      result.items.slice(0, 8).forEach((item) => {
+        const li = document.createElement("li");
+        li.className = "feed-item";
+        const link = document.createElement("a");
+        link.href = item.link || "#";
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = item.title;
+        li.appendChild(link);
+        if (item.date) {
+          const meta = document.createElement("div");
+          meta.className = "feed-meta";
+          meta.textContent = item.date;
+          li.appendChild(meta);
+        }
+        list.appendChild(li);
+      });
+      card.appendChild(list);
+      grid.appendChild(card);
+      result.items.forEach((item) => {
+        if (!item.link) return;
+        feedItemCache.unshift({
+          title: item.title,
+          link: item.link,
+          date: item.date,
+          source: result.name,
+        });
+      });
+      persistFeedItems();
+      feedLoadedCount += 1;
+      updateFeedSnapshot();
+    };
+
+    const fetchWithTimeout = async (url, timeoutMs = 12000) => {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(url, { signal: controller.signal });
+        return response;
+      } finally {
+        clearTimeout(timeout);
+      }
+    };
+
+    const loadSingleFeed = async (feed) => {
+      const proxies = proxyUrls(feed.url);
+      for (const proxy of proxies) {
+        try {
+          const response = await fetchWithTimeout(proxy.url);
+          if (!response.ok) {
+            continue;
+          }
+          if (proxy.type === "rss2json") {
+            const json = await response.json();
+            if (Array.isArray(json.items) && json.items.length) {
+              const items = json.items.map((item) => ({
+                title: item.title || "Untitled",
+                link: item.link || "",
+                date: item.pubDate || "",
+              }));
+              return { name: feed.name, items };
+            }
+            continue;
+          }
+          if (proxy.type === "json") {
+            const json = await response.json();
+            if (json && json.contents) {
+              const items = parseFeed(json.contents);
+              if (items.length) {
+                return { name: feed.name, items };
+              }
+            }
+            continue;
+          }
+          const xmlText = await response.text();
+          const items = parseFeed(xmlText);
+          if (items.length) {
+            return { name: feed.name, items };
+          }
+        } catch (error) {
+          continue;
+        }
+      }
+      return { name: feed.name, error: "Unable to load feed." };
+    };
+
+    const loadFeeds = async () => {
+      const status = document.getElementById("feedStatus");
+      const grid = document.getElementById("feedGrid");
+      grid.innerHTML = "";
+      feedLoadedCount = 0;
+      feedFailedCount = 0;
+      updateFeedSnapshot();
+      const concurrency = 6;
+      let index = 0;
+      let completed = 0;
+
+      const worker = async () => {
+        while (index < feeds.length) {
+          const currentIndex = index++;
+          const current = feeds[currentIndex];
+          status.textContent = `Loading feeds (${completed}/${feeds.length})...`;
+          const result = await loadSingleFeed(current);
+          renderFeedCard(result);
+          completed += 1;
+          status.textContent = `Loading feeds (${completed}/${feeds.length})...`;
+        }
+      };
+
+      const workers = Array.from({ length: concurrency }, () => worker());
+      await Promise.all(workers);
+
+      persistFeedItems();
+      status.textContent = "";
+    };
+
+    loadFeeds();
+  </script>
+
+    </main>
+
+    <footer class="footer">
+      <div>Generated 2026-02-03 14:31 · Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
+    </footer>
+  </body>
+</html>
+

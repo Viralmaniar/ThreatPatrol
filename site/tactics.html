@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tactics · TTPExplorer</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/theme.js" defer></script>
+    <script src="tactics-data.js"></script>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="site-nav__inner">
+        <a class="site-brand" href="index.html">
+          <span class="site-brand__mark"></span>
+          <span>TTPExplorer</span>
+        </a>
+        <div class="site-menu">
+          <a href="index.html">Overview</a>
+          <a href="tactics.html" class="active">Tactics</a>
+          <a href="techniques.html">Techniques</a>
+          <a href="software.html">Software</a>
+          <a href="groups.html">Groups</a>
+          <a href="campaigns.html">Campaigns</a>
+          <a href="mitigation.html">Mitigations</a>
+          <a href="detections.html">Detections</a>
+          <a href="analytics.html">Analytics</a>
+          <a href="feeds.html">Feeds</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+        <h2>Tactics Explorer</h2>
+        <div>
+          <label for="tacticSelect" class="tag">Select Tactic</label>
+          <select id="tacticSelect" class="kbd" style="padding:6px 10px; min-width:260px;"></select>
+        </div>
+      </div>
+      <p>Technique coverage grouped by tactic from the Enterprise ATT&CK v18.1 techniques catalog.</p>
+      <hr class="hr" />
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Tactic</div></div>
+          <div class="card-body">
+            <div style="font-size:18px; color:var(--primary); font-weight:600;" id="tacticName">—</div>
+            <div class="small" style="margin-top:6px;">Technique coverage for this tactic.</div>
+            <div id="platformTags" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:6px;"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Profile</div></div>
+          <div class="card-body">
+            <table class="table" id="profileTable">
+              <tr><th>Metric</th><th>Count</th></tr>
+              <tr><td>Total Techniques</td><td id="countTechniques">—</td></tr>
+              <tr><td>Sub-techniques</td><td id="countSubTechniques">—</td></tr>
+              <tr><td>Platforms</td><td id="countPlatforms">—</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Highlights</div></div>
+          <div class="card-body">
+            <div class="small">Most common platforms</div>
+            <div id="platformList" style="margin-top:8px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header" style="justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div class="card-title">Techniques</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <select id="fltPlatform" class="kbd"><option value="">Any Platform</option></select>
+            <input id="fltSearch" class="kbd" placeholder="Search ID, name, description" />
+            <label class="tag"><input type="checkbox" id="fltSub" /> Sub-techniques only</label>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table" id="techTable"></table>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div>Generated 2026-02-03 14:31 · Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
+    </footer>
+
+    <script>
+      const TACTICS_DATA = window.TACTICS_DATA || { tactics: [], perTactic: {} };
+
+      const escapeHtml = (value) =>
+        String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+
+      const unique = (items) => Array.from(new Set(items.filter(Boolean)));
+
+      const splitList = (value) =>
+        String(value || "")
+          .split(/[,;]/)
+          .map((item) => item.trim())
+          .filter(Boolean);
+
+      const clamp = (text, max = 220) => {
+        const value = String(text || "");
+        return value.length > max ? `${value.slice(0, max)}...` : value;
+      };
+
+      const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.textContent = value || "—";
+        }
+      };
+
+      const buildPlatformStats = (techniques) => {
+        const counts = new Map();
+        techniques.forEach((tech) => {
+          splitList(tech.platforms).forEach((platform) => {
+            counts.set(platform, (counts.get(platform) || 0) + 1);
+          });
+        });
+        return Array.from(counts.entries()).sort((a, b) => b[1] - a[1]);
+      };
+
+      const renderPlatformTags = (platforms) => {
+        const container = document.getElementById("platformTags");
+        if (!container) return;
+        if (!platforms.length) {
+          container.innerHTML = '<span class="tag">No platforms listed</span>';
+          return;
+        }
+        container.innerHTML = platforms
+          .slice(0, 8)
+          .map((platform) => `<span class="tag">${escapeHtml(platform)}</span>`)
+          .join("");
+      };
+
+      const renderPlatformList = (platformStats) => {
+        const container = document.getElementById("platformList");
+        if (!container) return;
+        if (!platformStats.length) {
+          container.innerHTML = '<div class="small">No platform data available.</div>';
+          return;
+        }
+        container.innerHTML = platformStats
+          .slice(0, 6)
+          .map(([platform, count]) =>
+            `<div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <span>${escapeHtml(platform)}</span><span class="small">${count}</span>
+            </div>`
+          )
+          .join("");
+      };
+
+      const renderTable = (techniques) => {
+        const table = document.getElementById("techTable");
+        if (!table) return;
+        const head =
+          "<tr><th>ID</th><th>Technique</th><th>Platforms</th><th>Sub-technique</th><th>Parent</th><th>Detection</th></tr>";
+        const body = techniques
+          .map((tech) => {
+            const link = tech.url ? `<a href="${escapeHtml(tech.url)}" target="_blank" rel="noopener">${escapeHtml(tech.name)}</a>` : escapeHtml(tech.name);
+            return (
+              `<tr>` +
+              `<td>${escapeHtml(tech.id)}</td>` +
+              `<td>${link}</td>` +
+              `<td>${escapeHtml(tech.platforms)}</td>` +
+              `<td>${tech.is_sub_technique ? "Yes" : "No"}</td>` +
+              `<td>${escapeHtml(tech.sub_technique_of)}</td>` +
+              `<td>${escapeHtml(clamp(tech.detection))}</td>` +
+              `</tr>`
+            );
+          })
+          .join("");
+        table.innerHTML = head + body;
+      };
+
+      const applyFilters = (techniques) => {
+        const platform = document.getElementById("fltPlatform")?.value || "";
+        const search = String(document.getElementById("fltSearch")?.value || "").toLowerCase();
+        const subOnly = document.getElementById("fltSub")?.checked;
+
+        return techniques.filter((tech) => {
+          if (platform && !splitList(tech.platforms).includes(platform)) {
+            return false;
+          }
+          if (subOnly && !tech.is_sub_technique) {
+            return false;
+          }
+          if (!search) {
+            return true;
+          }
+          const haystack = [tech.id, tech.name, tech.description, tech.detection]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+          return haystack.includes(search);
+        });
+      };
+
+      const populatePlatformFilter = (platforms) => {
+        const select = document.getElementById("fltPlatform");
+        if (!select) return;
+        const options = ["", ...platforms];
+        select.innerHTML = options
+          .map((platform) =>
+            platform
+              ? `<option value="${escapeHtml(platform)}">${escapeHtml(platform)}</option>`
+              : "<option value=\"\">Any Platform</option>"
+          )
+          .join("");
+      };
+
+      const renderTactic = (tactic) => {
+        const tacticsEntry = TACTICS_DATA.perTactic[tactic];
+        if (!tacticsEntry) return;
+        const techniques = tacticsEntry.techniques || [];
+        const subCount = techniques.filter((tech) => tech.is_sub_technique).length;
+        const platforms = unique(techniques.flatMap((tech) => splitList(tech.platforms)));
+        const platformStats = buildPlatformStats(techniques);
+
+        setText("tacticName", tactic);
+        setText("countTechniques", techniques.length ? String(techniques.length) : "0");
+        setText("countSubTechniques", subCount ? String(subCount) : "0");
+        setText("countPlatforms", platforms.length ? String(platforms.length) : "0");
+
+        renderPlatformTags(platforms);
+        renderPlatformList(platformStats);
+        populatePlatformFilter(platforms);
+
+        const filtered = applyFilters(techniques);
+        renderTable(filtered);
+      };
+
+      const attachEvents = () => {
+        const tacticSelect = document.getElementById("tacticSelect");
+        if (tacticSelect) {
+          tacticSelect.addEventListener("change", () => {
+            renderTactic(tacticSelect.value);
+          });
+        }
+
+        ["fltPlatform", "fltSearch", "fltSub"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const handler = () => {
+            const tactic = document.getElementById("tacticSelect")?.value;
+            if (tactic) {
+              renderTactic(tactic);
+            }
+          };
+          el.addEventListener("change", handler);
+          el.addEventListener("input", handler);
+        });
+      };
+
+      const init = () => {
+        const select = document.getElementById("tacticSelect");
+        if (!select) return;
+        select.innerHTML = TACTICS_DATA.tactics
+          .map((tactic) => `<option value="${escapeHtml(tactic)}">${escapeHtml(tactic)}</option>`)
+          .join("");
+
+        const first = TACTICS_DATA.tactics[0];
+        if (first) {
+          select.value = first;
+          renderTactic(first);
+        }
+
+        attachEvents();
+      };
+
+      init();
+    </script>
+  </body>
+</html>
+

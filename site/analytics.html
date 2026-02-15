@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Analytics · TTPExplorer</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/theme.js" defer></script>
+    <script src="analytics-data.js"></script>
+    <style>
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+      }
+
+      .summary-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .summary-card h4 {
+        margin: 0;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+
+      .summary-card p {
+        margin: 6px 0 0 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      .table tr.selected {
+        background: var(--primary-soft-2);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="site-nav__inner">
+        <a class="site-brand" href="index.html">
+          <span class="site-brand__mark"></span>
+          <span>TTPExplorer</span>
+        </a>
+        <div class="site-menu">
+          <a href="index.html">Overview</a>
+          <a href="tactics.html">Tactics</a>
+          <a href="techniques.html">Techniques</a>
+          <a href="software.html">Software</a>
+          <a href="groups.html">Groups</a>
+          <a href="campaigns.html">Campaigns</a>
+          <a href="mitigation.html">Mitigations</a>
+          <a href="detections.html">Detections</a>
+          <a href="analytics.html" class="active">Analytics</a>
+          <a href="feeds.html">Feeds</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+        <h2>Analytics</h2>
+        <div>
+          <label for="analyticSelect" class="tag">Select Analytic</label>
+          <select id="analyticSelect" class="kbd" style="padding:6px 10px; min-width:280px;"></select>
+        </div>
+      </div>
+      <p>Detection analytics from the Enterprise ATT&CK v18.1 analytics catalog.</p>
+      <hr class="hr" />
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Analytic</div></div>
+          <div class="card-body">
+            <div style="font-size:18px; color:var(--primary); font-weight:600; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <span id="analyticName">—</span>
+              <span id="analyticId" class="tag">—</span>
+            </div>
+            <div id="analyticDesc" style="margin-top:8px; color:var(--muted);">—</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Catalog Snapshot</div></div>
+          <div class="card-body">
+            <div class="summary-grid">
+              <div class="summary-card">
+                <h4>Total Analytics</h4>
+                <p id="totalAnalytics">—</p>
+              </div>
+              <div class="summary-card">
+                <h4>Domains</h4>
+                <p id="totalDomains">—</p>
+              </div>
+              <div class="summary-card">
+                <h4>Latest Update</h4>
+                <p id="latestModified">—</p>
+              </div>
+            </div>
+            <hr class="hr" />
+            <table class="table" id="keywordTable"></table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header" style="justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div class="card-title">Analytics Catalog</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <input id="fltSearch" class="kbd" placeholder="Search ID, name, description" />
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+            <span class="small">Quick filters</span>
+            <label class="tag"><input type="checkbox" class="fltTag" value="powershell" /> PowerShell</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="azure" /> Azure</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="gcp" /> GCP</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="amazon" /> Amazon</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="mimikatz" /> Mimikatz</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="active directory" /> Active Directory</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="execution" /> Execution</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="process" /> Process</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="file" /> File</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="access" /> Access</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="suspicious" /> Suspicious</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="anomalous" /> Anomalous</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="network" /> Network</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="outbound" /> Outbound</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="registry" /> Registry</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="defender" /> Defender</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="command" /> Command</label>
+            <label class="tag"><input type="checkbox" class="fltTag" value="shell" /> Shell</label>
+          </div>
+          <table class="table" id="analyticsTable"></table>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:10px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button id="pagePrev" class="kbd">Prev</button>
+              <span id="pageInfo" class="small">Page 1 of 1</span>
+              <button id="pageNext" class="kbd">Next</button>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="small">Rows per page</span>
+              <select id="pageSize" class="kbd">
+                <option value="10">10</option>
+                <option value="25" selected>25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </main>
+
+    <footer class="footer">
+      <div>Generated 2026-02-03 14:31 · Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
+    </footer>
+
+    <script>
+      const ANALYTICS_STATE = {
+        rows: Array.isArray(window.ANALYTICS_ROWS) ? window.ANALYTICS_ROWS : [],
+        filtered: [],
+        selectedId: "",
+        page: 1,
+        pageSize: 25,
+      };
+
+      const escapeHtml = (value) =>
+        String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+
+      const normalize = (value) => String(value ?? "").trim();
+
+      const parseDate = (value) => {
+        if (!value) return null;
+        const parsed = new Date(value);
+        return Number.isNaN(parsed.getTime()) ? null : parsed;
+      };
+
+      const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.textContent = value || "—";
+        }
+      };
+
+      const setSummary = () => {
+        const total = ANALYTICS_STATE.rows.length;
+        setText("totalAnalytics", total ? String(total) : "—");
+        setText("totalDomains", "—");
+        setText("latestModified", "—");
+
+        renderKeywordTable();
+      };
+
+      const renderDetails = (row) => {
+        if (!row) return;
+        setText("analyticName", row.name || row.ID || "—");
+        setText("analyticId", row.ID || "—");
+        setText("analyticDesc", row.description || "—");
+      };
+
+      const renderTable = () => {
+        const table = document.getElementById("analyticsTable");
+        if (!table) return;
+        const total = ANALYTICS_STATE.filtered.length;
+        const totalPages = Math.max(1, Math.ceil(total / ANALYTICS_STATE.pageSize));
+        if (ANALYTICS_STATE.page > totalPages) {
+          ANALYTICS_STATE.page = totalPages;
+        }
+        if (ANALYTICS_STATE.page < 1) {
+          ANALYTICS_STATE.page = 1;
+        }
+        const start = (ANALYTICS_STATE.page - 1) * ANALYTICS_STATE.pageSize;
+        const end = start + ANALYTICS_STATE.pageSize;
+        const pageRows = ANALYTICS_STATE.filtered.slice(start, end);
+        const head = "<tr><th>ID</th><th>Name</th><th>Description</th></tr>";
+        const body = pageRows
+          .map((row) => {
+            const id = escapeHtml(row.ID || "");
+            const isSelected = row.ID === ANALYTICS_STATE.selectedId ? " selected" : "";
+            return (
+              `<tr class="${isSelected}" data-id="${id}">` +
+              `<td>${id}</td>` +
+              `<td>${escapeHtml(row.name)}</td>` +
+              `<td>${escapeHtml(row.description)}</td>` +
+              "</tr>"
+            );
+          })
+          .join("");
+
+        table.innerHTML = head + body;
+        updatePager(totalPages);
+      };
+
+      const updatePager = (totalPages) => {
+        const info = document.getElementById("pageInfo");
+        const prev = document.getElementById("pagePrev");
+        const next = document.getElementById("pageNext");
+        if (info) {
+          info.textContent = `Page ${ANALYTICS_STATE.page} of ${totalPages}`;
+        }
+        if (prev) {
+          prev.disabled = ANALYTICS_STATE.page <= 1;
+        }
+        if (next) {
+          next.disabled = ANALYTICS_STATE.page >= totalPages;
+        }
+      };
+
+      const filterRows = () => {
+        const search = normalize(document.getElementById("fltSearch")?.value).toLowerCase();
+        const activeTags = Array.from(document.querySelectorAll(".fltTag:checked"))
+          .map((input) => input.value.toLowerCase());
+
+        ANALYTICS_STATE.filtered = ANALYTICS_STATE.rows.filter((row) => {
+          if (!search) {
+            return true;
+          }
+          const haystack = [row.ID, row.name, row.description]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+          return haystack.includes(search);
+        });
+
+        if (activeTags.length) {
+          ANALYTICS_STATE.filtered = ANALYTICS_STATE.filtered.filter((row) => {
+            const haystack = [row.ID, row.name, row.description]
+              .filter(Boolean)
+              .join(" ")
+              .toLowerCase();
+            return activeTags.some((tag) => haystack.includes(tag));
+          });
+        }
+
+        ANALYTICS_STATE.page = 1;
+        renderTable();
+      };
+
+      const selectAnalytic = (id) => {
+        const match = ANALYTICS_STATE.rows.find((row) => row.ID === id);
+        if (!match) return;
+        ANALYTICS_STATE.selectedId = id;
+        const select = document.getElementById("analyticSelect");
+        if (select) {
+          select.value = id;
+        }
+        renderDetails(match);
+        renderTable();
+      };
+
+      const populateSelect = () => {
+        const select = document.getElementById("analyticSelect");
+        if (!select) return;
+        select.innerHTML = ANALYTICS_STATE.rows
+          .map((row) => `<option value="${escapeHtml(row.ID)}">${escapeHtml(row.ID)}</option>`)
+          .join("");
+      };
+
+      const populateDomains = () => {};
+
+      const attachEvents = () => {
+        const select = document.getElementById("analyticSelect");
+        if (select) {
+          select.addEventListener("change", (event) => {
+            selectAnalytic(event.target.value);
+          });
+        }
+
+        const search = document.getElementById("fltSearch");
+        if (search) {
+          search.addEventListener("input", filterRows);
+        }
+
+        document.querySelectorAll(".fltTag").forEach((input) => {
+          input.addEventListener("change", filterRows);
+        });
+
+        const prev = document.getElementById("pagePrev");
+        if (prev) {
+          prev.addEventListener("click", () => {
+            ANALYTICS_STATE.page = Math.max(1, ANALYTICS_STATE.page - 1);
+            renderTable();
+          });
+        }
+
+        const next = document.getElementById("pageNext");
+        if (next) {
+          next.addEventListener("click", () => {
+            const totalPages = Math.max(1, Math.ceil(ANALYTICS_STATE.filtered.length / ANALYTICS_STATE.pageSize));
+            ANALYTICS_STATE.page = Math.min(totalPages, ANALYTICS_STATE.page + 1);
+            renderTable();
+          });
+        }
+
+        const pageSize = document.getElementById("pageSize");
+        if (pageSize) {
+          pageSize.addEventListener("change", (event) => {
+            const nextSize = Number.parseInt(event.target.value, 10);
+            ANALYTICS_STATE.pageSize = Number.isNaN(nextSize) ? 25 : nextSize;
+            ANALYTICS_STATE.page = 1;
+            renderTable();
+          });
+        }
+
+        const table = document.getElementById("analyticsTable");
+        if (table) {
+          table.addEventListener("click", (event) => {
+            const row = event.target.closest("tr[data-id]");
+            if (!row) return;
+            selectAnalytic(row.getAttribute("data-id"));
+          });
+        }
+      };
+
+      const loadAnalytics = () =>
+        ANALYTICS_STATE.rows
+          .map((row) => ({
+            ID: normalize(row.ID),
+            name: normalize(row.name),
+            description: normalize(row.description),
+          }))
+          .filter((row) => row.ID || row.name);
+
+      const STOP_WORDS = new Set([
+        "a", "an", "and", "are", "as", "at", "be", "been", "by", "for", "from", "has", "have",
+        "if", "in", "into", "is", "it", "its", "of", "on", "or", "that", "the", "their", "this",
+        "to", "was", "were", "with", "within", "without", "across", "using", "use", "used",
+        "via", "can", "may", "also", "such", "including", "include", "detect", "detects",
+        "detection", "attempts", "attempt", "activity", "activities", "behaviors", "behavior"
+      ]);
+
+      const tokenize = (text) =>
+        String(text || "")
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, " ")
+          .split(/\s+/)
+          .map((token) => token.trim())
+          .filter((token) => token.length >= 4 && !STOP_WORDS.has(token));
+
+      const renderKeywordTable = () => {
+        const table = document.getElementById("keywordTable");
+        if (!table) return;
+        const counts = new Map();
+        ANALYTICS_STATE.rows.forEach((row) => {
+          tokenize(row.description).forEach((token) => {
+            counts.set(token, (counts.get(token) || 0) + 1);
+          });
+        });
+
+        const top = Array.from(counts.entries())
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 15);
+
+        if (!top.length) {
+          table.innerHTML = "<tr><td>No keywords available.</td></tr>";
+          return;
+        }
+
+        const head = "<tr><th>Keyword</th><th>Count</th></tr>";
+        const body = top
+          .map(([term, count]) => `<tr><td>${escapeHtml(term)}</td><td>${count}</td></tr>`)
+          .join("");
+        table.innerHTML = head + body;
+      };
+
+      const init = async () => {
+        try {
+          const select = document.getElementById("analyticSelect");
+          if (select) {
+            select.innerHTML = "<option>Loading analytics...</option>";
+          }
+
+          if (!ANALYTICS_STATE.rows.length) {
+            throw new Error("No analytics rows found in analytics-data.js");
+          }
+
+          ANALYTICS_STATE.rows = loadAnalytics();
+          ANALYTICS_STATE.rows.sort((a, b) => a.ID.localeCompare(b.ID));
+          ANALYTICS_STATE.filtered = [...ANALYTICS_STATE.rows];
+          populateSelect();
+          populateDomains();
+          setSummary();
+          attachEvents();
+
+          const first = ANALYTICS_STATE.rows[0]?.ID || "";
+          if (first) {
+            selectAnalytic(first);
+          }
+          filterRows();
+        } catch (error) {
+          const select = document.getElementById("analyticSelect");
+          if (select) {
+            select.innerHTML = "<option>Unable to load analytics</option>";
+          }
+          const table = document.getElementById("analyticsTable");
+          if (table) {
+            table.innerHTML = `<tr><td>Unable to load analytics workbook. ${escapeHtml(error.message)}</td></tr>`;
+          }
+          const keywordTable = document.getElementById("keywordTable");
+          if (keywordTable) {
+            keywordTable.innerHTML = `<tr><td>Unable to load keyword summary. ${escapeHtml(error.message)}</td></tr>`;
+          }
+        }
+      };
+
+      init();
+    </script>
+  </body>
+</html>

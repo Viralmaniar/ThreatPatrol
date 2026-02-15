@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Detections · TTPExplorer</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/theme.js" defer></script>
+    <script src="detection-data.js"></script>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="site-nav__inner">
+        <a class="site-brand" href="index.html">
+          <span class="site-brand__mark"></span>
+          <span>TTPExplorer</span>
+        </a>
+        <div class="site-menu">
+          <a href="index.html">Overview</a>
+          <a href="tactics.html">Tactics</a>
+          <a href="techniques.html">Techniques</a>
+          <a href="software.html">Software</a>
+          <a href="groups.html">Groups</a>
+          <a href="campaigns.html">Campaigns</a>
+          <a href="mitigation.html">Mitigations</a>
+          <a href="detections.html" class="active">Detections</a>
+          <a href="analytics.html">Analytics</a>
+          <a href="feeds.html">Feeds</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:14px;">
+        <h2>Detection Strategies</h2>
+        <div>
+          <label for="strategySelect" class="tag">Select Strategy</label>
+          <select id="strategySelect" class="kbd" style="padding:6px 10px; min-width:280px;"></select>
+        </div>
+      </div>
+      <hr class="hr" />
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Detection Strategy</div></div>
+          <div class="card-body">
+            <div style="font-size:18px; color:var(--primary); font-weight:600; display:flex; align-items:center; gap:10px;">
+              <span id="strategyName">—</span>
+              <a id="strategyLink" class="tag" href="#" target="_blank" rel="noopener">MITRE Link</a>
+            </div>
+            <div id="strategyDesc" style="margin-top:8px; color:var(--muted);">—</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Profile</div></div>
+          <div class="card-body">
+            <table class="table" id="profileStats">
+              <tr><th>Metric</th><th>Count</th></tr>
+              <tr><td>Tactics</td><td id="countTactics">—</td></tr>
+              <tr><td>Techniques</td><td id="countTechniques">—</td></tr>
+              <tr><td>Platforms</td><td id="countPlatforms">—</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header" style="justify-content:space-between;">
+          <div class="card-title">Detected Techniques</div>
+          <div style="display:flex; gap:10px;">
+            <button id="tabTech" class="kbd">Techniques</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="filters" style="display:grid; gap:8px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); margin-bottom:8px;">
+            <select id="fltPlatform" class="kbd" data-label="Platform"><option value="">Any Platform</option></select>
+            <select id="fltTactic" class="kbd" data-label="Tactic"><option value="">Any Tactic</option></select>
+            <input id="fltTID" class="kbd" placeholder="TID" />
+            <input id="fltTechnique" class="kbd" placeholder="Technique" />
+          </div>
+          <div id="panelTech">
+            <table class="table" id="techTable"></table>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        const unique = (arr) => Array.from(new Set(arr.filter(Boolean)));
+        const containsAny = (hay, needle) => {
+          if (!needle) return true;
+          return (hay || "").toLowerCase().includes(needle.toLowerCase());
+        };
+
+        function populateSelect(sel, values){
+          const el = document.getElementById(sel);
+          const current = el.value;
+          const label = el.dataset.label || '';
+          const base = el.querySelector('option')?.value || '';
+          el.innerHTML = `<option value="${base}">Any${label ? ' '+label : ''}</option>` + unique(values).sort().map(v=>`<option>${v}</option>`).join('');
+          if(unique(values).includes(current)) el.value = current;
+        }
+
+        function currentFilters(){
+          return {
+            platform: document.getElementById('fltPlatform').value,
+            tactic: document.getElementById('fltTactic').value,
+            tid: document.getElementById('fltTID').value.trim(),
+            technique: document.getElementById('fltTechnique').value.trim(),
+          };
+        }
+
+        function normalizedProfile(s){
+          const techniques = s.techniques || s.profile?.techniques || [];
+          const tactics = s.tactics || s.profile?.tactics || [];
+          const platforms = s.platforms || s.profile?.platforms || [];
+          return { techniques, tactics, platforms };
+        }
+
+        function filteredTechniqueRows(s){
+          const f = currentFilters();
+          const prof = normalizedProfile(s);
+          return prof.techniques.filter(x=>
+            (!f.platform || containsAny(x.Platforms, f.platform)) &&
+            (!f.tactic || containsAny(x.Tactic, f.tactic)) &&
+            (!f.tid || containsAny(x.ID, f.tid)) &&
+            (!f.technique || containsAny(x.Technique, f.technique))
+          );
+        }
+
+        function renderStrategy(name){
+          const s = DETECTION_DATA.perStrategy[name];
+          if(!s){ return; }
+          document.getElementById('strategyName').textContent = name;
+          document.getElementById('strategyDesc').textContent = s.description || 'No description available.';
+          const link = document.getElementById('strategyLink');
+          link.href = s.url || '#';
+
+          const prof = normalizedProfile(s);
+          const stats = {
+            tactics: unique(prof.tactics).length,
+            techniques: prof.techniques.length,
+            platforms: unique(prof.platforms).length,
+          };
+          document.getElementById('countTactics').textContent = stats.tactics;
+          document.getElementById('countTechniques').textContent = stats.techniques;
+          document.getElementById('countPlatforms').textContent = stats.platforms;
+
+          populateSelect('fltPlatform', prof.techniques.flatMap(x=> (x.Platforms||'').split(/[,;]/).map(s=>s.trim()).filter(Boolean)));
+          populateSelect('fltTactic', prof.techniques.flatMap(x=> (x.Tactic||'').split(/[,;]/).map(s=>s.trim()).filter(Boolean)));
+
+          renderTechniques(name);
+        }
+
+        function renderTechniques(name){
+          const s = DETECTION_DATA.perStrategy[name];
+          const rows = filteredTechniqueRows(s);
+          const head = `<tr><th>TID</th><th>Technique</th><th>Tactic</th><th>Platforms</th></tr>`;
+          const body = rows.map(x=>`<tr><td>${x.ID||''}</td><td>${x.Technique||''}</td><td>${x.Tactic||''}</td><td>${x.Platforms||''}</td></tr>`).join('');
+          document.getElementById('techTable').innerHTML = head + body;
+        }
+
+        function init(){
+          const select = document.getElementById('strategySelect');
+          select.innerHTML = DETECTION_DATA.strategies.map(s=>`<option>${s.name}</option>`).join('');
+          select.addEventListener('change', ()=> renderStrategy(select.value));
+
+          ['fltPlatform','fltTactic','fltTID','fltTechnique'].forEach(id=>{
+            document.getElementById(id).addEventListener('input', ()=>{
+              const name = document.getElementById('strategySelect').value;
+              renderTechniques(name);
+            });
+            document.getElementById(id).addEventListener('change', ()=>{
+              const name = document.getElementById('strategySelect').value;
+              renderTechniques(name);
+            });
+          });
+
+          const first = DETECTION_DATA.strategies[0]?.name || '';
+          if(first){ select.value = first; renderStrategy(first); }
+        }
+
+        init();
+      </script>
+    </main>
+
+    <footer class="footer">
+      <div>Generated 2026-02-03 14:31 · Theme: <span class="tag" data-theme-label>Terminal Green</span></div>
+    </footer>
+  </body>
+</html>
+

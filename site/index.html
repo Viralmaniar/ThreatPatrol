@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Overview · TTPExplorer</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/theme.js" defer></script>
+    <script id="dashboard-data" type="application/json">{"generated":"embedded","summary":{"groups":172,"campaigns":52,"tools":91,"malware":693,"techniques":691,"uniqueTechniquesObserved":488,"tactics":14,"platforms":11,"mitigations":44,"detectionStrategies":691,"analytics":1739,"detections":691,"detectionGap":0},"platforms":[{"label":"Windows","value":472},{"label":"macOS","value":355},{"label":"Linux","value":354},{"label":"ESXi","value":118},{"label":"IaaS","value":104},{"label":"Network Devices","value":100},{"label":"PRE","value":92},{"label":"Office Suite","value":78},{"label":"SaaS","value":67},{"label":"Identity Provider","value":49},{"label":"Containers","value":48}],"techniqueUsageTop":[{"label":"Ingress Tool Transfer","value":85},{"label":"User Execution: Malicious File","value":84},{"label":"Command and Scripting Interpreter: PowerShell","value":83},{"label":"Obtain Capabilities: Tool","value":79},{"label":"Phishing: Spearphishing Attachment","value":77},{"label":"Command and Scripting Interpreter: Windows Command Shell","value":71},{"label":"Masquerading: Match Legitimate Resource Name or Location","value":59},{"label":"Application Layer Protocol: Web Protocols","value":56},{"label":"Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder","value":55},{"label":"System Information Discovery","value":55},{"label":"Scheduled Task/Job: Scheduled Task","value":54},{"label":"File and Directory Discovery","value":50},{"label":"User Execution: Malicious Link","value":47},{"label":"Indicator Removal: File Deletion","value":46},{"label":"Command and Scripting Interpreter: Visual Basic","value":45},{"label":"Valid Accounts","value":44},{"label":"Data from Local System","value":43},{"label":"Phishing: Spearphishing Link","value":43},{"label":"OS Credential Dumping: LSASS Memory","value":42},{"label":"System Network Configuration Discovery","value":42}],"tacticPlatformCounts":[["Collection",32,27,27],["Command and Control",45,45,45],["Credential Access",53,36,38],["Defense Evasion",165,101,101],["Discovery",42,38,38],["Execution",27,24,23],["Exfiltration",17,17,17],["Impact",30,30,30],["Initial Access",21,20,20],["Lateral Movement",17,10,11],["Persistence",91,52,50],["Privilege Escalation",75,39,36],["Reconnaissance",0,0,0],["Resource Development",0,0,0]],"adversariesTop":[{"name":"Kimsuky","techniques":109,"tools":5,"malware":12,"total":126},{"name":"APT28","techniques":91,"tools":10,"malware":18,"total":119},{"name":"Lazarus Group","techniques":93,"tools":4,"malware":22,"total":119},{"name":"APT29","techniques":66,"tools":15,"malware":34,"total":115},{"name":"APT41","techniques":82,"tools":14,"malware":18,"total":114},{"name":"Mustang Panda","techniques":85,"tools":5,"malware":18,"total":108},{"name":"OilRig","techniques":76,"tools":12,"malware":18,"total":106},{"name":"Sandworm Team","techniques":79,"tools":8,"malware":19,"total":106},{"name":"Turla","techniques":68,"tools":13,"malware":17,"total":98},{"name":"Volt Typhoon","techniques":81,"tools":16,"malware":1,"total":98},{"name":"APT32","techniques":78,"tools":5,"malware":10,"total":93},{"name":"Magic Hound","techniques":79,"tools":10,"malware":3,"total":92},{"name":"FIN7","techniques":67,"tools":4,"malware":14,"total":85},{"name":"Wizard Spider","techniques":64,"tools":11,"malware":10,"total":85},{"name":"Threat Group-3390","techniques":57,"tools":12,"malware":12,"total":81}],"toolsTop":[{"label":"Mimikatz","value":51},{"label":"PsExec","value":38},{"label":"Net","value":32},{"label":"Impacket","value":18},{"label":"Empire","value":17},{"label":"Ping","value":14},{"label":"ipconfig","value":13},{"label":"certutil","value":13},{"label":"Tasklist","value":12},{"label":"AdFind","value":12},{"label":"LaZagne","value":12},{"label":"netstat","value":11},{"label":"Systeminfo","value":10},{"label":"NBTscan","value":10},{"label":"PowerSploit","value":9},{"label":"BITSAdmin","value":8},{"label":"Reg","value":8},{"label":"netsh","value":7},{"label":"Windows Credential Editor","value":7},{"label":"Rclone","value":7}],"malwareTop":[{"label":"Cobalt Strike","value":29},{"label":"PlugX","value":15},{"label":"PoisonIvy","value":14},{"label":"gh0st RAT","value":11},{"label":"China Chopper","value":9},{"label":"ShadowPad","value":8},{"label":"njRAT","value":7},{"label":"ASPXSpy","value":5},{"label":"NETWIRE","value":4},{"label":"NanoCore","value":4},{"label":"Derusbi","value":4},{"label":"BLACKCOFFEE","value":3},{"label":"reGeorg","value":3},{"label":"DarkComet","value":3},{"label":"Winnti for Linux","value":3},{"label":"ZxShell","value":3},{"label":"More_eggs","value":3},{"label":"WarzoneRAT","value":3},{"label":"QakBot","value":3},{"label":"HTTPBrowser","value":2}],"detectionStrategiesTop":[{"label":"Detection of Digital Certificates","value":3},{"label":"Detection of Botnet","value":2},{"label":"Detection of Cloud Accounts","value":2},{"label":"Detection of Code Signing Certificates","value":2},{"label":"Detection of DNS Server","value":2},{"label":"Detection of Domains","value":2},{"label":"Detection of Email Accounts","value":2},{"label":"Detection of Exploits","value":2},{"label":"Detection of Malware","value":2},{"label":"Detection of Server","value":2},{"label":"Detection of Serverless","value":2},{"label":"Detection of Social Media Accounts","value":2},{"label":"Detection of Virtual Private Server","value":2},{"label":"Detection of Web Services","value":2},{"label":"Abuse of Domain Accounts","value":1},{"label":"Abuse of Information Repositories for Data Collection","value":1},{"label":"Abuse of PowerShell for Arbitrary Execution","value":1},{"label":"Account Access Removal via Multi-Platform Audit Correlation","value":1},{"label":"Account Manipulation Behavior Chain Detection","value":1},{"label":"Application Exhaustion Flood Detection Across Platforms","value":1}],"campaignsTop":[{"label":"SolarWinds Compromise","value":71},{"label":"Operation Wocao","value":70},{"label":"Operation Dream Job","value":55},{"label":"SharePoint ToolShell Exploitation","value":35},{"label":"C0015","value":34},{"label":"Operation CuckooBees","value":33},{"label":"Cutting Edge","value":31},{"label":"C0017","value":29},{"label":"Night Dragon","value":29},{"label":"C0027","value":28},{"label":"Operation Honeybee","value":28},{"label":"Frankenstein","value":27},{"label":"Leviathan Australian Intrusions","value":26},{"label":"RedPenguin","value":26},{"label":"ArcaneDoor","value":25},{"label":"HomeLand Justice","value":25},{"label":"APT41 DUST","value":23},{"label":"3CX Supply Chain Attack","value":22},{"label":"RedDelta Modified PlugX Infection Chain Operations","value":22},{"label":"2016 Ukraine Electric Power Attack","value":21}]}</script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #040a05;
+        --surface: rgba(4, 20, 8, 0.75);
+        --surface-alt: rgba(6, 28, 12, 0.68);
+        --surface-soft: rgba(6, 18, 9, 0.55);
+        --border: rgba(57, 255, 20, 0.18);
+        --text: #e6ffe9;
+        --muted: rgba(178, 255, 199, 0.72);
+        --accent: #39ff14;
+        --accent-2: #00ffd5;
+        --accent-3: #a4ff4f;
+        font-family: "Aptos", "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 1.4rem;
+        background: var(--bg);
+        color: var(--text);
+        font-size: 0.9rem;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at top, rgba(16, 60, 24, 0.55), transparent 55%),
+          linear-gradient(135deg, #010603 0%, #04150b 55%, #061d0f 100%);
+        z-index: -1;
+      }
+
+      .site-nav {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 1rem 1.3rem;
+        box-shadow: 0 28px 60px rgba(0, 0, 0, 0.55);
+        margin-bottom: 1.6rem;
+        backdrop-filter: blur(18px);
+      }
+
+      .site-nav__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+      }
+
+      .site-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-size: 0.78rem;
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      .site-brand__mark {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        box-shadow: 0 0 0 5px rgba(57, 255, 20, 0.18);
+      }
+
+      .site-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+        align-items: center;
+      }
+
+      .site-menu a {
+        color: var(--text);
+        text-decoration: none;
+        font-size: 0.76rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+      }
+
+      .site-menu a.active,
+      .site-menu a:hover {
+        color: var(--accent);
+      }
+
+      .page-shell {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .hero {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 1.6rem 1.8rem;
+        box-shadow: 0 32px 70px rgba(0, 0, 0, 0.6);
+      }
+
+      .hero h1 {
+        margin: 0 0 0.4rem 0;
+        font-size: 1.7rem;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+      }
+
+      @media (max-width: 1200px) {
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 860px) {
+        .grid {
+          grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+      }
+
+      .card {
+        background: var(--surface-alt);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 1rem 1.1rem;
+        box-shadow: 0 22px 50px rgba(0, 0, 0, 0.55);
+      }
+
+      .card h2 {
+        font-size: 1rem;
+        margin: 0 0 0.7rem 0;
+      }
+
+      .card.full-span {
+        grid-column: 1 / -1;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.7rem;
+      }
+
+      .summary-card {
+        background: rgba(3, 10, 6, 0.6);
+        border: 1px solid rgba(57, 255, 20, 0.15);
+        border-radius: 12px;
+        padding: 0.7rem;
+      }
+
+      .summary-card h4 {
+        margin: 0;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+
+      .summary-card p {
+        margin: 0.35rem 0 0 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .bar-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      .bar-row {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+
+      .bar-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.78rem;
+      }
+
+      .bar-track {
+        background: rgba(57, 255, 20, 0.12);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        height: 8px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      }
+
+      .stacked-chart {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      .stacked-row {
+        display: grid;
+        grid-template-columns: minmax(120px, 180px) 1fr;
+        gap: 0.7rem;
+        align-items: center;
+      }
+
+      .stacked-label {
+        font-size: 0.78rem;
+        color: var(--text);
+      }
+
+      .stacked-track {
+        display: flex;
+        height: 12px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(57, 255, 20, 0.12);
+        border: 1px solid rgba(57, 255, 20, 0.15);
+      }
+
+      .stacked-segment {
+        height: 100%;
+      }
+
+      .stacked-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-top: 0.2rem;
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-bottom: 0.6rem;
+        font-size: 0.76rem;
+        color: var(--muted);
+      }
+
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .legend-swatch {
+        width: 12px;
+        height: 12px;
+        border-radius: 4px;
+        display: inline-block;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.78rem;
+      }
+
+      .table th,
+      .table td {
+        text-align: left;
+        padding: 0.35rem 0.4rem;
+        border-bottom: 1px solid rgba(57, 255, 20, 0.16);
+        vertical-align: top;
+      }
+
+      .table th {
+        color: var(--muted);
+        text-transform: uppercase;
+        font-size: 0.64rem;
+        letter-spacing: 0.07em;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        background: rgba(57, 255, 20, 0.12);
+        border: 1px solid rgba(57, 255, 20, 0.2);
+        font-size: 0.7rem;
+      }
+
+      .highlight-list {
+        margin: 0;
+        padding-left: 1.1rem;
+        color: var(--muted);
+      }
+
+      .highlight-list li {
+        margin-bottom: 0.4rem;
+      }
+
+      .loading {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: var(--muted);
+      }
+
+      .loading span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 1s infinite ease-in-out;
+      }
+
+      .loading span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .loading span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .site-footer {
+        margin-top: 2rem;
+        background: var(--surface);
+        border-radius: 20px;
+        padding: 1.4rem;
+        border: 1px solid var(--border);
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .timeline-shell {
+        position: relative;
+        border-radius: 24px;
+        padding: 18px 18px 22px;
+        background: radial-gradient(circle at top, rgba(6, 20, 12, 0.98), rgba(4, 10, 6, 0.98));
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        box-shadow: 0 0 0 1px rgba(10, 24, 14, 0.7), 0 28px 60px rgba(0, 0, 0, 0.55);
+        overflow: hidden;
+        backdrop-filter: blur(18px);
+      }
+
+      .timeline-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      .timeline-controls {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .timeline-btn {
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        background: radial-gradient(circle at top, rgba(11, 20, 16, 1), rgba(11, 20, 16, 0.9));
+        padding: 6px 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        color: var(--muted);
+        transition: all 0.18s ease-out;
+      }
+
+      .timeline-btn:hover {
+        border-color: var(--primary);
+        color: var(--text);
+        transform: translateY(-1px);
+        box-shadow: 0 0 18px rgba(40, 255, 106, 0.35);
+      }
+
+      .timeline-label {
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .timeline-label-line {
+        height: 1px;
+        flex: 1;
+        background: linear-gradient(90deg, rgba(148, 163, 184, 0.1), rgba(148, 163, 184, 0.6), rgba(148, 163, 184, 0.1));
+      }
+
+      .timeline-scroll {
+        position: relative;
+        overflow-x: auto;
+        overflow-y: visible;
+        padding-bottom: 12px;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(148, 163, 184, 0.6) transparent;
+      }
+
+      .timeline-scroll::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      .timeline-scroll::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.5);
+        border-radius: 999px;
+      }
+
+      .timeline-track {
+        position: relative;
+        height: 4px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(29, 255, 106, 0.4), rgba(16, 28, 20, 0.9));
+        margin-inline: 12px;
+        margin-bottom: 32px;
+      }
+
+      .timeline-progress {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 0%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--primary), var(--primary-2), #a4ff4f);
+        box-shadow: 0 0 12px rgba(40, 255, 106, 0.75);
+        transition: width 0.18s ease-out;
+      }
+
+      .timeline-items {
+        display: flex;
+        align-items: flex-start;
+        gap: 26px;
+        padding-inline: 18px;
+      }
+
+      .timeline-item {
+        position: relative;
+        scroll-snap-align: center;
+        min-width: 220px;
+        max-width: 260px;
+        padding-top: 22px;
+        flex-shrink: 0;
+      }
+
+      .timeline-dot {
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+        background: radial-gradient(circle, #f0fff4 0, var(--primary) 40%, #0b1410 70%);
+        border: 2px solid rgba(148, 163, 184, 0.9);
+        box-shadow: 0 0 10px rgba(40, 255, 106, 0.9);
+        z-index: 2;
+      }
+
+      .timeline-card {
+        position: relative;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(11, 20, 16, 0.95), rgba(10, 18, 14, 0.9));
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        box-shadow: 0 12px 35px rgba(5, 12, 8, 0.9);
+        padding: 14px 14px 16px;
+        backdrop-filter: blur(16px);
+        transform-origin: center;
+        transform: translateY(4px) scale(0.96);
+        opacity: 0.82;
+        transition: transform 0.18s ease-out, box-shadow 0.18s ease-out, border-color 0.18s ease-out, opacity 0.18s ease-out;
+      }
+
+      .timeline-item.is-active .timeline-card {
+        transform: translateY(0) scale(1);
+        box-shadow: 0 18px 45px rgba(5, 12, 8, 0.95), 0 0 25px rgba(40, 255, 106, 0.4);
+        border-color: var(--primary);
+        opacity: 1;
+      }
+
+      .timeline-card:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 20px 50px rgba(5, 12, 8, 0.95), 0 0 20px rgba(40, 255, 106, 0.5);
+      }
+
+      .timeline-version {
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--primary);
+        margin-bottom: 6px;
+      }
+
+      .timeline-title {
+        font-size: 0.98rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .timeline-tag {
+        display: inline-flex;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        padding: 2px 7px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        color: var(--muted);
+        margin-bottom: 8px;
+        background-color: rgba(15, 23, 42, 0.9);
+      }
+
+      .timeline-body {
+        font-size: 0.86rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .timeline-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        color: var(--muted);
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .timeline-hint {
+        font-size: 0.78rem;
+        color: rgba(148, 163, 184, 0.9);
+      }
+
+      .timeline-hint kbd {
+        display: inline-flex;
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        font-size: 0.7rem;
+        background: rgba(11, 20, 16, 0.9);
+        margin-inline: 2px;
+      }
+
+      .timeline-footer a {
+        color: var(--primary);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="site-nav__inner">
+        <a class="site-brand" href="index.html">
+          <span class="site-brand__mark"></span>
+          <span>TTPExplorer</span>
+        </a>
+        <div class="site-menu">
+          <a href="index.html" class="active">Overview</a>
+          <a href="tactics.html">Tactics</a>
+          <a href="techniques.html">Techniques</a>
+          <a href="software.html">Software</a>
+          <a href="groups.html">Groups</a>
+          <a href="campaigns.html">Campaigns</a>
+          <a href="mitigation.html">Mitigations</a>
+          <a href="detections.html">Detections</a>
+          <a href="analytics.html">Analytics</a>
+          <a href="feeds.html">Feeds</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="page-shell">
+      <section class="hero">
+        <h1>MITRE ATT&CK Enterprise Overview</h1>
+        <p>Terminal-green analytics snapshot powered by Enterprise v18.1 datasets. Use the Techniques explorer for technique-level detail.</p>
+      </section>
+
+      <section class="timeline-shell" id="attackTimeline">
+        <div class="timeline-header">
+          <div class="timeline-label">ATT&CK Versions<div class="timeline-label-line"></div></div>
+          <div class="timeline-controls">
+            <button class="timeline-btn" data-dir="left">
+              <span aria-hidden="true">←</span>
+              Back
+            </button>
+            <button class="timeline-btn" data-dir="right">
+              Forward
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>
+        <div class="timeline-scroll" id="timelineScroll">
+          <div class="timeline-track">
+            <div class="timeline-progress" id="timelineProgress"></div>
+          </div>
+          <div class="timeline-items" id="timelineItems"></div>
+        </div>
+        <div class="timeline-footer">
+          <span>Enterprise ATT&CK v9.0 → v18.1</span>
+          <div class="timeline-hint">
+            Tip: Use <kbd>←</kbd><kbd>→</kbd> or shift + scroll to move along the timeline.
+          </div>
+          <a href="https://attack.mitre.org/resources/attack-data-and-tools/" target="_blank" rel="noopener">ATT&CK Excel Files by Version</a>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card full-span">
+          <h2>Entity Pulse</h2>
+          <div class="summary-grid" id="summary-cards">
+            <div class="summary-card">
+              <h4>Loading</h4>
+              <p class="loading"><span></span><span></span><span></span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Coverage Insights</h2>
+          <ul class="highlight-list" id="insights">
+            <li class="loading"><span></span><span></span><span></span> Loading insights...</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Top Platforms</h2>
+          <div class="bar-list" id="platform-bars"></div>
+        </div>
+
+        <div class="card">
+          <h2>Top Techniques by Adversary Usage</h2>
+          <div class="bar-list" id="technique-bars"></div>
+        </div>
+
+        <div class="card">
+          <h2>Attack Tactics by Platform</h2>
+          <p class="meta">Counts of techniques per tactic for Windows, macOS, and Linux.</p>
+          <div class="legend" id="tactics-platform-legend"></div>
+          <div class="stacked-chart" id="tactics-platform-chart"></div>
+        </div>
+
+        <div class="card">
+          <h2>Top 15 Adversaries and TTP Mix</h2>
+          <div class="legend" id="adversary-legend"></div>
+          <div class="stacked-chart" id="adversary-chart"></div>
+        </div>
+
+        <div class="card">
+          <h2>Top 20 Tools</h2>
+          <div class="bar-list" id="tools-bars"></div>
+        </div>
+
+        <div class="card">
+          <h2>Top 20 Malware Families</h2>
+          <div class="bar-list" id="malware-bars"></div>
+        </div>
+
+        <div class="card">
+          <h2>Top 20 Detection Strategies</h2>
+          <div class="bar-list" id="detection-bars"></div>
+        </div>
+
+        <div class="card">
+          <h2>Top 20 Campaigns</h2>
+          <div class="bar-list" id="campaign-bars"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="page-footer">
+      Loading MITRE ATT&CK snapshot...
+    </footer>
+
+    <script>
+      const embeddedData = JSON.parse(document.getElementById("dashboard-data").textContent);
+
+      const timelineVersions = [
+        { version: "v9.0", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v9.0/enterprise-attack/enterprise-attack-v9.0.xlsx" },
+        { version: "v10.0", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v10.0/enterprise-attack/enterprise-attack-v10.0.xlsx" },
+        { version: "v11.0", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v11.0/enterprise-attack/enterprise-attack-v11.0.xlsx" },
+        { version: "v12.0", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v12.0/enterprise-attack/enterprise-attack-v12.0.xlsx" },
+        { version: "v13.0", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v13.0/enterprise-attack/enterprise-attack-v13.0.xlsx" },
+        { version: "v14.0", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v14.0/enterprise-attack/enterprise-attack-v14.0.xlsx" },
+        { version: "v15.0", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v15.0/enterprise-attack/enterprise-attack-v15.0.xlsx" },
+        { version: "v16.0", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v16.0/enterprise-attack/enterprise-attack-v16.0.xlsx" },
+        { version: "v16.1", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v16.1/enterprise-attack/enterprise-attack-v16.1.xlsx" },
+        { version: "v17.0", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v17.0/enterprise-attack/enterprise-attack-v17.0.xlsx" },
+        { version: "v17.1", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v17.1/enterprise-attack/enterprise-attack-v17.1.xlsx" },
+        { version: "v18.0", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v18.0/enterprise-attack/enterprise-attack-v18.0.xlsx" },
+        { version: "v18.1", tag: "ATT&CK", url: "https://attack.mitre.org/docs/attack-excel-files/v18.1/enterprise-attack/enterprise-attack-v18.1.xlsx" },
+      ];
+
+      const createBarList = (targetId, rows, limit = 20) => {
+        const container = document.getElementById(targetId);
+        container.innerHTML = "";
+        if (!rows.length) {
+          container.textContent = "No data available.";
+          return;
+        }
+        const max = Math.max(...rows.map((row) => row.value), 1);
+        rows.slice(0, limit).forEach((row) => {
+          const wrapper = document.createElement("div");
+          wrapper.className = "bar-row";
+          const label = document.createElement("div");
+          label.className = "bar-label";
+          label.innerHTML = `<span>${row.label}</span><span>${row.value}</span>`;
+          const track = document.createElement("div");
+          track.className = "bar-track";
+          const fill = document.createElement("div");
+          fill.className = "bar-fill";
+          fill.style.width = `${Math.round((row.value / max) * 100)}%`;
+          track.appendChild(fill);
+          wrapper.appendChild(label);
+          wrapper.appendChild(track);
+          container.appendChild(wrapper);
+        });
+      };
+
+      const renderTable = (targetId, headers, rows) => {
+        const container = document.getElementById(targetId);
+        const table = document.createElement("table");
+        table.className = "table";
+        const thead = document.createElement("thead");
+        thead.innerHTML = `<tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr>`;
+        table.appendChild(thead);
+        const tbody = document.createElement("tbody");
+        rows.forEach((row) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = row.map((cell) => `<td>${cell}</td>`).join("");
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        container.innerHTML = "";
+        container.appendChild(table);
+      };
+
+      const renderStackedBars = (targetId, legendId, rows) => {
+        const container = document.getElementById(targetId);
+        const legend = document.getElementById(legendId);
+        container.innerHTML = "";
+        legend.innerHTML = "";
+
+        const palette = {
+          windows: "#39ff14",
+          macos: "#00ffd5",
+          linux: "#a4ff4f",
+        };
+
+        const legendItems = [
+          { label: "Windows", color: palette.windows },
+          { label: "macOS", color: palette.macos },
+          { label: "Linux", color: palette.linux },
+        ];
+        legendItems.forEach((item) => {
+          const entry = document.createElement("div");
+          entry.className = "legend-item";
+          entry.innerHTML = `<span class="legend-swatch" style="background:${item.color}"></span>${item.label}`;
+          legend.appendChild(entry);
+        });
+
+        if (!rows.length) {
+          container.textContent = "No data available.";
+          return;
+        }
+
+        const totals = rows.map((row) => row[1] + row[2] + row[3]);
+        const maxTotal = Math.max(...totals, 1);
+
+        rows.forEach(([tactic, windows, macos, linux]) => {
+          const total = windows + macos + linux;
+          const row = document.createElement("div");
+          row.className = "stacked-row";
+
+          const label = document.createElement("div");
+          label.className = "stacked-label";
+          label.textContent = tactic;
+
+          const track = document.createElement("div");
+          track.className = "stacked-track";
+
+          const segmentWindows = document.createElement("div");
+          segmentWindows.className = "stacked-segment";
+          segmentWindows.style.background = palette.windows;
+          segmentWindows.style.width = `${total ? (windows / total) * 100 : 0}%`;
+
+          const segmentMacos = document.createElement("div");
+          segmentMacos.className = "stacked-segment";
+          segmentMacos.style.background = palette.macos;
+          segmentMacos.style.width = `${total ? (macos / total) * 100 : 0}%`;
+
+          const segmentLinux = document.createElement("div");
+          segmentLinux.className = "stacked-segment";
+          segmentLinux.style.background = palette.linux;
+          segmentLinux.style.width = `${total ? (linux / total) * 100 : 0}%`;
+
+          track.style.width = `${total ? (total / maxTotal) * 100 : 0}%`;
+
+          track.appendChild(segmentWindows);
+          track.appendChild(segmentMacos);
+          track.appendChild(segmentLinux);
+
+          const meta = document.createElement("div");
+          meta.className = "stacked-meta";
+          meta.innerHTML = `<span>W: ${windows}</span><span>M: ${macos}</span><span>L: ${linux}</span>`;
+
+          const chartCell = document.createElement("div");
+          chartCell.appendChild(track);
+          chartCell.appendChild(meta);
+
+          row.appendChild(label);
+          row.appendChild(chartCell);
+          container.appendChild(row);
+        });
+      };
+
+      const renderAdversaryStacked = (targetId, legendId, rows) => {
+        const container = document.getElementById(targetId);
+        const legend = document.getElementById(legendId);
+        container.innerHTML = "";
+        legend.innerHTML = "";
+
+        const palette = {
+          techniques: "#39ff14",
+          tools: "#00ffd5",
+          malware: "#a4ff4f",
+        };
+
+        const legendItems = [
+          { label: "Techniques", color: palette.techniques },
+          { label: "Tools", color: palette.tools },
+          { label: "Malware", color: palette.malware },
+        ];
+        legendItems.forEach((item) => {
+          const entry = document.createElement("div");
+          entry.className = "legend-item";
+          entry.innerHTML = `<span class="legend-swatch" style="background:${item.color}"></span>${item.label}`;
+          legend.appendChild(entry);
+        });
+
+        if (!rows.length) {
+          container.textContent = "No data available.";
+          return;
+        }
+
+        const totals = rows.map((row) => row.techniques + row.tools + row.malware);
+        const maxTotal = Math.max(...totals, 1);
+
+        rows.forEach((row) => {
+          const total = row.techniques + row.tools + row.malware;
+          const entry = document.createElement("div");
+          entry.className = "stacked-row";
+
+          const label = document.createElement("div");
+          label.className = "stacked-label";
+          label.textContent = row.name;
+
+          const track = document.createElement("div");
+          track.className = "stacked-track";
+          track.style.width = `${total ? (total / maxTotal) * 100 : 0}%`;
+
+          const segmentTech = document.createElement("div");
+          segmentTech.className = "stacked-segment";
+          segmentTech.style.background = palette.techniques;
+          segmentTech.style.width = `${total ? (row.techniques / total) * 100 : 0}%`;
+
+          const segmentTools = document.createElement("div");
+          segmentTools.className = "stacked-segment";
+          segmentTools.style.background = palette.tools;
+          segmentTools.style.width = `${total ? (row.tools / total) * 100 : 0}%`;
+
+          const segmentMalware = document.createElement("div");
+          segmentMalware.className = "stacked-segment";
+          segmentMalware.style.background = palette.malware;
+          segmentMalware.style.width = `${total ? (row.malware / total) * 100 : 0}%`;
+
+          track.appendChild(segmentTech);
+          track.appendChild(segmentTools);
+          track.appendChild(segmentMalware);
+
+          const meta = document.createElement("div");
+          meta.className = "stacked-meta";
+          meta.innerHTML = `<span>T: ${row.techniques}</span><span>Tools: ${row.tools}</span><span>M: ${row.malware}</span><span>Total: ${row.total}</span>`;
+
+          const chartCell = document.createElement("div");
+          chartCell.appendChild(track);
+          chartCell.appendChild(meta);
+
+          entry.appendChild(label);
+          entry.appendChild(chartCell);
+          container.appendChild(entry);
+        });
+      };
+
+      const formatNumber = (value) => Number(value).toLocaleString("en-US");
+
+      const renderTimeline = () => {
+        const container = document.getElementById("timelineItems");
+        const scroll = document.getElementById("timelineScroll");
+        const progress = document.getElementById("timelineProgress");
+        if (!container || !scroll || !progress) return;
+
+        container.innerHTML = timelineVersions
+          .map((item, index) =>
+            `<article class="timeline-item" data-index="${index}">` +
+            `<div class="timeline-dot"></div>` +
+            `<div class="timeline-card">` +
+            `<div class="timeline-version">${item.version}</div>` +
+            `<div class="timeline-title">Enterprise ATT&CK ${item.version}</div>` +
+            `<div class="timeline-tag">${item.tag}</div>` +
+            `<div class="timeline-body">Excel dataset bundle for Enterprise ATT&CK ${item.version}. Download the master spreadsheet for versioned analysis.</div>` +
+            `</div>` +
+            `</article>`
+          )
+          .join("");
+
+        const items = Array.from(document.querySelectorAll(".timeline-item"));
+
+        const updateProgress = () => {
+          const maxScroll = scroll.scrollWidth - scroll.clientWidth;
+          const ratio = maxScroll > 0 ? scroll.scrollLeft / maxScroll : 0;
+          progress.style.width = `${Math.max(3, ratio * 100)}%`;
+        };
+
+        const setActiveItemByScroll = () => {
+          let closest = null;
+          let closestDist = Infinity;
+          const containerCenter = scroll.getBoundingClientRect().left + scroll.clientWidth / 2;
+          items.forEach((item) => {
+            const rect = item.getBoundingClientRect();
+            const itemCenter = rect.left + rect.width / 2;
+            const dist = Math.abs(itemCenter - containerCenter);
+            if (dist < closestDist) {
+              closestDist = dist;
+              closest = item;
+            }
+          });
+          if (closest) {
+            items.forEach((item) => item.classList.remove("is-active"));
+            closest.classList.add("is-active");
+          }
+        };
+
+        scroll.addEventListener("scroll", () => {
+          updateProgress();
+          setActiveItemByScroll();
+        });
+
+        document.querySelectorAll(".timeline-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const dir = btn.dataset.dir === "right" ? 1 : -1;
+            const step = scroll.clientWidth * 0.8;
+            scroll.scrollBy({ left: dir * step, behavior: "smooth" });
+          });
+        });
+
+        window.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+            event.preventDefault();
+            const dir = event.key === "ArrowRight" ? 1 : -1;
+            const step = scroll.clientWidth * 0.7;
+            scroll.scrollBy({ left: dir * step, behavior: "smooth" });
+          }
+        });
+
+        scroll.addEventListener("wheel", (event) => {
+          if (Math.abs(event.deltaX) < Math.abs(event.deltaY)) {
+            scroll.scrollBy({ left: event.deltaY, behavior: "auto" });
+          }
+        });
+
+        container.addEventListener("click", (event) => {
+          const card = event.target.closest(".timeline-card");
+          if (!card) return;
+          const index = Number(card.parentElement?.dataset.index || 0);
+          const item = items[index];
+          if (!item) return;
+          const url = timelineVersions[index]?.url;
+          if (url) {
+            window.open(url, "_blank", "noopener");
+          }
+        });
+
+        updateProgress();
+        setActiveItemByScroll();
+      };
+
+      const init = () => {
+        renderTimeline();
+        const summary = embeddedData.summary;
+        const summaryRows = [
+          ["Adversary Groups", summary.groups],
+          ["Campaigns", summary.campaigns],
+          ["Tools", summary.tools],
+          ["Malware", summary.malware],
+          ["Techniques", summary.techniques],
+          ["Mitigations", summary.mitigations],
+          ["Unique Techniques (Observed)", summary.uniqueTechniquesObserved],
+          ["Tactics", summary.tactics],
+          ["Platforms", summary.platforms],
+          ["Detection Strategies", summary.detectionStrategies],
+          ["Analytics", summary.analytics],
+          ["Detections", summary.detections],
+          ["Detection Gap", summary.detectionGap],
+        ];
+
+        const summaryContainer = document.getElementById("summary-cards");
+        summaryContainer.innerHTML = "";
+        summaryRows.forEach(([label, value]) => {
+          const card = document.createElement("div");
+          card.className = "summary-card";
+          card.innerHTML = `<h4>${label}</h4><p>${formatNumber(value)}</p>`;
+          summaryContainer.appendChild(card);
+        });
+
+        const detectionCoverage = summary.techniques - summary.detectionGap;
+        const detectionCoveragePercent = summary.techniques
+          ? ((detectionCoverage / summary.techniques) * 100).toFixed(1)
+          : "0.0";
+
+        const topPlatform = embeddedData.platforms[0];
+        const topTactic = embeddedData.tacticPlatformCounts
+          .map(([tactic, win, mac, lin]) => ({ tactic, count: win + mac + lin }))
+          .sort((a, b) => b.count - a.count)[0];
+
+        const insights = [
+          `Detection coverage sits at ${detectionCoveragePercent}% of the technique catalog, leaving ${formatNumber(
+            summary.detectionGap
+          )} techniques without explicit detection mapping.`,
+          topPlatform
+            ? `${topPlatform.label} dominates platform coverage with ${formatNumber(topPlatform.value)} mapped techniques.`
+            : "Platform coverage pending.",
+          topTactic
+            ? `${topTactic.tactic} remains the most populated tactic with ${formatNumber(topTactic.count)} techniques.`
+            : "Tactic coverage pending.",
+          `${formatNumber(summary.uniqueTechniquesObserved)} unique techniques are directly associated with adversary groups in the relationship data.`,
+        ];
+
+        const insightList = document.getElementById("insights");
+        insightList.innerHTML = "";
+        insights.forEach((text) => {
+          const li = document.createElement("li");
+          li.textContent = text;
+          insightList.appendChild(li);
+        });
+
+        createBarList("platform-bars", embeddedData.platforms, 10);
+        createBarList("technique-bars", embeddedData.techniqueUsageTop, 20);
+        renderStackedBars(
+          "tactics-platform-chart",
+          "tactics-platform-legend",
+          embeddedData.tacticPlatformCounts
+        );
+
+        renderAdversaryStacked("adversary-chart", "adversary-legend", embeddedData.adversariesTop);
+
+        createBarList("tools-bars", embeddedData.toolsTop, 20);
+        createBarList("malware-bars", embeddedData.malwareTop, 20);
+        createBarList("detection-bars", embeddedData.detectionStrategiesTop, 20);
+        createBarList("campaign-bars", embeddedData.campaignsTop, 20);
+
+        const footer = document.getElementById("page-footer");
+        footer.innerHTML = `Generated ${new Date().toLocaleString()} · Theme: <span class="tag" data-theme-label>Terminal Green</span>`;
+      };
+
+      init();
+    </script>
+  </body>
+</html>
+
