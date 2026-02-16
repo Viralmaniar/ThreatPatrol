@@ -158,7 +158,7 @@ body{
 
 /* Layout */
 .main{max-width:1200px; margin:0 auto; padding:18px 16px}
-.footer{max-width:1200px; margin:0 auto; padding:16px; color:var(--muted); border-top:1px solid var(--border)}
+.footer{max-width:1200px; margin:0 auto; padding:16px; color:var(--muted); border-top:1px solid var(--border); text-align:center}
 .hr{border:0; border-top:1px solid var(--border); margin:12px 0}
 
 /* Cards */
@@ -214,6 +214,14 @@ select.kbd option{background-color:var(--surface); color:var(--text)}
 /* Links */
 a{color:var(--primary); text-decoration:none}
 a:hover{text-decoration:underline}
+
+/* Follow link */
+.footer-links{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; justify-content:center}
+.follow-link{display:inline-flex; align-items:center; gap:6px}
+.follow-link a{display:inline-flex; align-items:center; gap:4px; color:var(--text); text-decoration:none; border:1px solid var(--border); padding:2px 6px; border-radius:999px; font-size:12px}
+.follow-link a:hover{color:var(--primary); border-color:var(--primary)}
+.follow-link .x-icon{width:12px; height:12px; fill:currentColor}
+.follow-link .social-icon{width:12px; height:12px; fill:currentColor}
 
 /* Plotly overrides */
 .js-plotly-plot .plotly .main-svg{border-radius:8px}
