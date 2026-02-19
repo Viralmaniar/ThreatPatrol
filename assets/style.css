@@ -1,4 +1,4 @@
-/* Terminal Green Theme */
+﻿/* Terminal Green Theme */
 :root{
   --bg:#0b0e10;
   --surface:#101417;
@@ -147,7 +147,7 @@ body{
 .site-nav{background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:1rem 1.3rem; box-shadow:0 28px 60px rgba(0,0,0,0.55); margin-bottom:1.6rem; backdrop-filter:blur(18px)}
 .site-nav__inner{display:flex; align-items:center; justify-content:space-between; gap:1.2rem; flex-wrap:wrap; max-width:1200px; margin:0 auto}
 .site-brand{display:inline-flex; align-items:center; gap:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; font-size:.78rem; color:var(--text); text-decoration:none}
-.site-brand__mark{width:12px; height:12px; border-radius:50%; background:linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow:0 0 0 5px rgba(57,255,20,0.18)}
+.site-brand__mark{width:20px; height:20px; border-radius:6px; background:url("TPLogo-removebg-preview.png") center/contain no-repeat; box-shadow:0 0 8px var(--primary-soft), 0 0 12px rgba(0,0,0,0.3)}
 .site-menu{display:flex; flex-wrap:wrap; gap:.9rem; align-items:center}
 .site-menu a{color:var(--text); text-decoration:none; font-size:.76rem; text-transform:uppercase; letter-spacing:.08em; font-weight:600}
 .site-menu a.active, .site-menu a:hover{color:var(--accent)}
@@ -229,3 +229,75 @@ a:hover{text-decoration:underline}
 /* Utilities */
 .small{font-size:12px; color:var(--muted)}
 .hidden{display:none}
+
+/* Campaign graph */
+.graph-shell{
+  position:relative;
+  min-height:520px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(0,240,255,0.12), transparent 45%),
+    radial-gradient(circle at 85% 30%, rgba(176,107,255,0.12), transparent 50%),
+    radial-gradient(circle at 40% 85%, rgba(57,255,20,0.12), transparent 48%),
+    var(--surface);
+}
+.graph-svg{width:100%; height:560px; display:block}
+.graph-links line{stroke:rgba(0,240,255,0.28); stroke-width:1}
+.graph-nodes .graph-node{stroke:rgba(255,255,255,0.25); stroke-width:1; cursor:grab}
+.graph-nodes .graph-node:active{cursor:grabbing}
+.graph-node--campaign{fill:#00f0ff}
+.graph-node--group{fill:#b06bff}
+.graph-node--software{fill:#39ff14}
+.graph-node--tactic{fill:#6fe6ff}
+.graph-node--technique{fill:#ff4fd8}
+.graph-label{
+  fill:var(--text);
+  font-size:12px;
+  letter-spacing:0.02em;
+  paint-order:stroke;
+  stroke:rgba(5,7,12,0.65);
+  stroke-width:3;
+}
+.graph-legend{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.graph-key{display:inline-flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em}
+.graph-dot{width:10px; height:10px; border-radius:50%; box-shadow:0 0 10px currentColor}
+.graph-dot--campaign{color:#00f0ff}
+.graph-dot--group{color:#b06bff}
+.graph-dot--software{color:#39ff14}
+.graph-dot--tactic{color:#6fe6ff}
+.graph-dot--technique{color:#ff4fd8}
+.graph-tooltip{
+  position:absolute;
+  top:0;
+  left:0;
+  min-width:180px;
+  max-width:260px;
+  background:rgba(5,10,20,0.92);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 12px;
+  color:var(--text);
+  font-size:12px;
+  line-height:1.35;
+  box-shadow:0 12px 30px rgba(0,0,0,0.45);
+  pointer-events:none;
+}
+.graph-tip-title{font-weight:700; color:var(--accent)}
+.graph-tip-line{color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:0.08em; margin-top:4px}
+.graph-tip-desc{color:var(--text); margin-top:6px}
+.graph-loading{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.18em;
+  background:linear-gradient(180deg, rgba(5,7,12,0.4), rgba(5,7,12,0.9));
+  z-index:2;
+}
+
