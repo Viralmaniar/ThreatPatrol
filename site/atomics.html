@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Atomics | ThreatPatrol</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <link rel="stylesheet" href="../assets/atomics.css" />
+    <script src="../assets/theme.js" defer></script>
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <script src="../assets/atomics-data.js"></script>
+    <script src="../assets/atomics-windows-data.js"></script>
+    <script src="../assets/atomics-containers-data.js"></script>
+    <script src="../assets/atomics-google-workspace-data.js"></script>
+    <script src="../assets/atomics-iaas-data.js"></script>
+    <script src="../assets/atomics-linux-data.js"></script>
+    <script src="../assets/atomics-macos-data.js"></script>
+    <script src="../assets/atomics-office-365-data.js"></script>
+    <script src="../assets/atomics.js" defer></script>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="site-nav__inner">
+        <a class="site-brand" href="index.html">
+          <span class="site-brand__mark"></span>
+          <span>ThreatPatrol</span>
+        </a>
+        <div class="site-menu">
+          <a href="index.html">Overview</a>
+          <a href="tactics.html">Tactics</a>
+          <a href="techniques.html">Techniques</a>
+          <a href="software.html">Software</a>
+          <a href="groups.html">Groups</a>
+          <a href="campaigns.html">Campaigns</a>
+          <a href="mitigation.html">Mitigations</a>
+          <a href="detections.html">Detections</a>
+          <a href="analytics.html">Analytics</a>
+          <a href="feeds.html">Feeds</a>
+          <a href="atomics.html" class="active">Atomics</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main">
+      <div class="header-row">
+        <h2>Atomic Tests Coverage</h2>
+        <div class="header-controls">
+          <label for="datasetSelect" class="tag">Dataset</label>
+          <select id="datasetSelect" class="kbd">
+            <option value="index">Index (All)</option>
+            <option value="windows">Windows</option>
+            <option value="containers">Containers</option>
+            <option value="google-workspace">Google Workspace</option>
+            <option value="iaas">IaaS</option>
+            <option value="linux">Linux</option>
+            <option value="macos">macOS</option>
+            <option value="office-365">Office 365</option>
+          </select>
+          <label for="tacticSelect" class="tag">Select Tactic</label>
+          <select id="tacticSelect" class="kbd" style="min-width:280px;"></select>
+          <span id="loadStatus" class="small">Loading index.json...</span>
+        </div>
+      </div>
+      <hr class="hr" />
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Tactic Snapshot</div></div>
+          <div class="card-body">
+            <div id="techniqueTitle" class="summary-title">—</div>
+            <div id="techniqueSubtitle" class="small">—</div>
+            <div class="summary-row">
+              <div class="summary-label">Top Executor</div>
+              <div id="techniqueExecutor" class="summary-value">—</div>
+            </div>
+            <div class="summary-row summary-row--stack">
+              <div class="summary-label">Techniques</div>
+              <div id="techniqueTactics" class="summary-chips">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Profile</div></div>
+          <div class="card-body">
+            <table class="table" id="profileStats">
+              <tr><th>Metric</th><th>Count</th></tr>
+              <tr><td>Tactics</td><td id="countTactics">—</td></tr>
+              <tr><td>Techniques</td><td id="countTechniques">—</td></tr>
+              <tr><td>Tests</td><td id="countTests">—</td></tr>
+              <tr><td>Executors</td><td id="countExecutors">—</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">Spider Diagram</div></div>
+          <div class="card-body">
+            <div id="radarPlot" class="plot"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header" style="justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div class="card-title">Details</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button id="tabTT" class="kbd active">Tactics & Techniques</button>
+            <button id="tabTests" class="kbd">Tests</button>
+            <button id="tabExecutors" class="kbd">Executors</button>
+            <button id="tabTactics" class="kbd">Tactics</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="panelTT">
+            <table class="table" id="ttTable"></table>
+          </div>
+          <div id="panelTests" class="hidden">
+            <table class="table" id="testsTable"></table>
+          </div>
+          <div id="panelExecutors" class="hidden">
+            <table class="table" id="executorsTable"></table>
+          </div>
+          <div id="panelTactics" class="hidden">
+            <table class="table" id="tacticsTable"></table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
