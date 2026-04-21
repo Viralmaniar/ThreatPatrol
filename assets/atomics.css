@@ -1,0 +1,71 @@
+/* atomics.css - layout and UI specifics for atomics.html */
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.summary-title {
+  font-size: 18px;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.summary-row--stack {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.summary-label {
+  color: var(--muted);
+}
+
+.summary-value {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.summary-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.summary-chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--primary-soft-2);
+}
+
+.kbd.active {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--text);
+}
+
+.plot {
+  width: 100%;
+  height: 320px;
+}
